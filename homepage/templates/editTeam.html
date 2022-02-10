@@ -1,0 +1,48 @@
+{%extends 'base.html'%}
+{% block title %}
+    Edit Team Info
+{% endblock title %}
+
+{% block body %}
+    {% if user.is_authenticated %}
+        <form method='POST'>
+            {%csrf_token%}
+            Team Name: <input type="text" value="{{team_name}}" name='team_name'><br>
+            Team Abbreviation: <input type="text" value="{{team_abvr}}" name='team_abbvr'><br>
+
+            <table width="50%" border="0">
+                <tr>
+                    <th>First Name</th>
+                    <th>Second Name</th>
+                    <th>Position</th>
+                    <th>Value</th>
+                </tr>
+                {% for player in players %}
+                <tr>
+                <td align="center"> <input type='text' value='{{player.first_name}}' name='{{player.player_id}}_first_name'> </td>
+                <td align="center"> <input type='text' value='{{player.second_name}}' name='{{player.player_id}}_second_name'> </td>
+                <td align="center">
+                    <select name='{{player.player_id}}_position' class="form-select" aria-label="Default select example">
+                    <option selected disabled hidden >{{player.position}}</option>
+                    <option value="Goalkeeper">Goalkeeper</option>
+                    <option value="Defender">Defender</option>
+                    <option value="Midfielder">Midfielder</option>
+                    <option value="Forward">Forward</option>
+                    </select>
+                </td>
+                <td align="center"> {{player.value}} </td>
+                </tr>
+                {%endfor%}
+            </table>
+
+            <input type="submit" value="Save">
+            <a class='c1' href={%url 'editTeam'%}> Go Back </a>
+
+        </form>
+    {%else%}
+        <a href={%url 'login'%}>Not Logged In! Login Again</a>
+    {% endif %}
+    
+
+    
+{% endblock body %}

@@ -1,0 +1,12 @@
+{%extends 'base.html'%}
+
+{%block body%}
+{% if user.is_authenticated %}
+    <h1 align="center">Welcome,{{user.username}}</h1>
+    <li><a href='viewUserTeam/{{user.id}}/'>view your team</li>
+    <li><a href='createUserTeam/{{user.id}}'>create Team</li></li>
+    <a href='logout/'>logout</a>
+{%else%}
+<a href='/'>not logged in,login to enter</a>
+{% endif %}
+{%endblock%}

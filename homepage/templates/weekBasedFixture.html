@@ -1,0 +1,27 @@
+{%extends 'base.html'%}
+{% block title %}
+    Week based fixtures
+{% endblock title %}
+
+{% block body %}
+    <table width="50%" border="0">
+        <tr>
+            <th>match_id</th>
+            <th>gameweek</th>
+            <th>home</th>
+            <th>away</th>
+            <th>home_score</th>
+            <th>away_score</th>
+        </tr>
+        {% for p in fixtures %}
+        <tr>
+            <td align="center">{{p.match_id}}</td>
+            <td align="center">{{p.gameweek}}</td>
+            <td align="center">{{p.home}}</td>
+            <td align="center">{{p.away}}</td>
+            <td align="center">{{p.home_score}}</td>
+            <td align="center">{{p.away_score}}</td>
+        </tr>
+        {%endfor%}
+    </table>
+{% endblock body %}

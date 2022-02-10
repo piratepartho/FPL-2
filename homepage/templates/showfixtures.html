@@ -1,0 +1,17 @@
+{%extends 'base.html'%}
+
+{%block body%}
+<h4>
+    SELECT gameweek
+</h4>
+<form method='POST'>
+    {%csrf_token%}
+<select name='fixture' class="form-select" aria-label="Default select example">
+    <option selected disabled hidden >{{cur_gameweek}}</option>
+    {% for i in weeklist %}
+        <option value="{{i}}">{{i}}</option>
+    {% endfor %}
+</select>
+<input type="submit" value="Show">
+</form>
+{% endblock %}

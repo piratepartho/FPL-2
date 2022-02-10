@@ -1,0 +1,12 @@
+{% extends 'base.html'%}
+
+{% block title %} 
+<title>CREATE TEAM</title>
+{%endblock%}
+{% block body %} 
+{% if user.is_authenticated %}
+    <h1>dummy text2</h1>
+{%else%}
+<a href='/'>not logged in,login to enter</a>
+{%endif%}
+{% endblock%}

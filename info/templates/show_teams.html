@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>All Teams</title>
+</head>
+<body>
+    <table width="100%" border="1">
+        <tr>
+            <th>ID</th>
+            <th>Team Abbreviation</th>
+            <th>Team Name</th>
+        </tr>
+        {% for team in all_teams %}
+        <tr>
+            <td>{{team.id}}</td>
+            <td><a href='{{team.id}}/'>{{team.name}}</a></td>
+            <td>{{team.abbvr}}</td>
+        </tr>
+        {%endfor%}
+    </table>
+</body>
+</html>

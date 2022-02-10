@@ -1,0 +1,27 @@
+
+{% extends 'base.html' %}
+{% block title %}
+    All Teams
+{% endblock title %}
+
+{% block body %}
+    {% if user.is_authenticated %}
+        <table width="100%" border="0">
+            <tr>
+                <th>ID</th>
+                <th>Team Abbreviation</th>
+                <th>Team Name</th>
+            </tr>
+            {% for team in all_teams %}
+            <tr>
+                <td>{{team.id}}</td>
+                <td><a href='{{team.id}}/'>{{team.name}}</a></td>
+                <td>{{team.abbvr}}</td>
+            </tr>
+            {%endfor%}
+        </table>
+        <a href="../">Go Back</a>
+    {% else %}
+        <a href={%url 'login'%}>Not Logged In! Login Again</a>
+    {% endif %}
+{% endblock body %}

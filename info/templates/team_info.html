@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Team Info</title>
+</head>
+<body>
+    {% comment %} need to show team info also {% endcomment %}
+    <table width="100%" border="1">
+        <tr>
+            {% comment %} <th>Player ID</th> {% endcomment %}
+            {% comment %} there will be a link to show player stat {% endcomment %}
+            <th>First Name</th>
+            <th>Second Name</th>
+            <th>Position</th>
+            <th>Value</th>
+            <th>Points Earned</th>
+        </tr>
+        {% for player in all_players %}
+        <tr>
+        {% comment %} <td> {{player.player_id}} </td> {% endcomment %}
+        <td> {{player.first_name}} </td>
+        <td> {{player.second_name}} </td>
+        <td> {{player.position}} </td>
+        <td> {{player.value}} </td>
+        <td> {{player.points}} </td>
+        </tr>
+        {%endfor%}
+    </table>
+    <a href={%url 'showTeamPage'%}> Back to team page </a>
+    
+</body>
+</html>
