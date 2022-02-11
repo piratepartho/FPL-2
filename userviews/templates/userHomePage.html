@@ -3,10 +3,9 @@
 {%block body%}
 {% if user.is_authenticated %}
     <h1 align="center">Welcome,{{user.username}}</h1>
-    <li><a href='viewUserTeam/{{user.id}}/'>view your team</li>
-    <li><a href='createUserTeam/{{user.id}}'>create Team</li></li>
+    <li><a href='{% url 'userTeamPage' user.id %}'> View your Team</li>
     <a href='logout/'>logout</a>
 {%else%}
-<a href='/'>not logged in,login to enter</a>
+<a href='/'>Not logged in, Login to enter</a>
 {% endif %}
 {%endblock%}

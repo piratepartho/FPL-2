@@ -3,6 +3,7 @@ from django.shortcuts import render,redirect
 from django.contrib import messages
 from django.db import connection
 import homepage.classes
+from homepage.views import gameweek as currentGameweek
 
 user=homepage.classes.User()
 def executeInSQL(sql):
@@ -30,6 +31,7 @@ def loginView(request):
             user.is_authenticated=True
         if(user.is_authenticated):
             user=homepage.classes.User(user_num[0][1],user_num[0][0],True)
+            user.setTeamName(user_num[0][4])
             return redirect('/home/')
         else:
             messages.error(request,'Login Credentials Invalid')
@@ -42,19 +44,6 @@ def logout(request):
 def homePageView(request,context=None):
     return render(request,'userHomePage.html',{'user':user})
 
-def userTeamView(request,user_id):
-    if(user.is_authenticated) :
-        context={'user_id':user_id,'user':user}
-        return render(request,'viewUserteam.html',context)
-    else:
-        return redirect('/')
-
-def createTeamView(request,user_id):
-    if(user.is_authenticated) :
-        context={'user_id':user_id,'user':user}
-        return render(request,'createUserteam.html',context)
-    else:
-        return redirect('/')
 
 def createUserView(request):
     if(request.method=='GET'):
@@ -85,3 +74,11 @@ def createUserView(request):
             cursor.execute(sql)
             cursor.close()
             return redirect('/')
+
+
+def myTeamView(request,user_id):
+    if(user.is_authenticated) :
+        context={'user_id':user_id,'user':user}
+        return render(request,'myTeam.html',context)
+    else:
+        return redirect('/')

@@ -229,7 +229,7 @@ def addStatHomePlayersSaveView(request,match_id):
 
     for p in result:
         id=p[0]
-        # MATCH_ID, GAMEWEEK, MIN_PLAYED, GOALS_SCORED, ASSIST, OWN_GOAL, PENALTIES_SAVED, PENALTIES_MISSED, YELLOW_CARDS, RED_CARDS, SAVES
+        
         minutes=request.POST[f'minutes{id}']
         gs=request.POST[f'goalScored{id}']
         ass=request.POST[f'assist{id}']
@@ -267,7 +267,7 @@ def addStatAwayPlayersSaveView(request,match_id):
 
     for p in result:
         id=p[0]
-        # MATCH_ID, GAMEWEEK, MIN_PLAYED, GOALS_SCORED, ASSIST, OWN_GOAL, PENALTIES_SAVED, PENALTIES_MISSED, YELLOW_CARDS, RED_CARDS, SAVES
+        
         minutes=request.POST[f'minutes{id}']
         gs=request.POST[f'goalScored{id}']
         ass=request.POST[f'assist{id}']
