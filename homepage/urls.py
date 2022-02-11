@@ -18,6 +18,7 @@ urlpatterns=[
     path('addStat/<int:match_id>/homePlayers/',views.addStatHomePlayersView,name='addStatHomePlayers'),
     path('addStat/<int:match_id>/homePlayers/save/',views.addStatHomePlayersSaveView,name='addStatHomePlayersSave'),
     path('addStat/<int:match_id>/awayPlayers/',views.addStatAwayPlayersView,name='addStatAwayPlayers'),
+    path('addStat/<int:match_id>/awayPlayers/save/',views.addStatAwayPlayersSaveView,name='addStatAwayPlayersSave'),
 
 ]
 
