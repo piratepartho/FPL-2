@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% block title %}
+    Select Fixture You Want To Edit
+{% endblock title %}
+
+{% block body %}
+<table width="70%" border="0">
+    <tr>
+        <th>home</th>
+        <th>away</th>
+        <th>home_score</th>
+        <th>away_score</th>
+    </tr>
+    {% for p in fixtures %}
+    <tr>
+        <td align="center">{{p.home}}</td>
+        <td align="center">{{p.away}}</td>
+        <td align="center">{{p.home_score}}</td>
+        <td align="center">{{p.away_score}}</td>
+        <td>
+            <form action="../{{p.match_id}}/score/"><button type="submit">Edit</button></form>
+        </td>
+    </tr>
+    {%endfor%}
+</table>
+{% endblock body %}

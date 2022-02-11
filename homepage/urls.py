@@ -12,5 +12,7 @@ urlpatterns=[
     path('fixture/',views.fixtureview,name='fixture'),
     path('fixture/getFixture/',views.getFixtureView,name='getFixture'),
     path('addFixture/',views.addFixture,name='addFixture'),
+    path('addStat/selectFixture/',views.addStatFixtureView,name='statFixtureSelect'),
+    path('addStat/<int:match_id>/score/',views.addStatScoreView,name='addStatScore'),
 ]
 

@@ -181,5 +181,19 @@ def addFixture(request):
         insertInSQL(sql)
         return redirect( '/admin/addFixture/')
 
+def addStatFixtureView(request):
+    sql="""SELECT MATCH_ID,GAMEWEEK,T1.TEAM_ABRV HOME_TEAM,T2.TEAM_ABRV AWAY_TEAM,HOME_TEAM_SCORE,AWAY_TEAM_SCORE
+                FROM FIXTURE LEFT JOIN TEAM T1
+                ON (FIXTURE.HOME_TEAM=T1.TEAM_ID)
+                LEFT JOIN TEAM T2
+                ON (FIXTURE.AWAY_TEAM=T2.TEAM_ID)
+                WHERE GAMEWEEK="""+str(gameweek)
+    result=executeInSQL(sql)
+    dict=[]
+    for r in result:
+        dict.append({'match_id':r[0],'gameweek':r[1],'home':r[2],'away':r[3],'home_score':r[4],'away_score':r[5]})
+    context={'fixtures':dict}
+    return render(request,'statFixtureSelect.html',context)
     
-    
+def addStatScoreView(request,match_id):
+    pass
