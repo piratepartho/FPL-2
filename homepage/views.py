@@ -1,3 +1,4 @@
+from re import A
 from django.shortcuts import render,redirect
 from django.contrib import messages
 from django.db import connection
@@ -102,32 +103,63 @@ def show_teams(request):
         dict.append({'id':team_id,'abbvr':team_abbvr,'name':team_name})
     
     return render(request,'show_teams.html',{'all_teams':dict,'user':user})
-def createfixtureview(request):
+def createfixtureview(request,selectedweek):
         if(user.is_authenticated):
-            return 
+            sql="""select team_name from team"""
+            team_list=executeInSQL(sql)
+            if(request.method=='GET'):
+                sql="""SELECT MATCH_ID,GAMEWEEK,T1.TEAM_ABRV HOME_TEAM,T2.TEAM_ABRV AWAY_TEAM,HOME_TEAM_SCORE,AWAY_TEAM_SCORE
+                    FROM FIXTURE LEFT JOIN TEAM T1
+                    ON (FIXTURE.HOME_TEAM=T1.TEAM_ID)
+                    LEFT JOIN TEAM T2
+                    ON (FIXTURE.AWAY_TEAM=T2.TEAM_ID)
+                    WHERE GAMEWEEK="""+str(selectedweek)
+                result=executeInSQL(sql)
+                fixtureDict=[]
+                for p in result:
+                    fixtureDict.append({
+                    'match_id':p[0],'gameweek':p[1],'home':p[2],'away':p[3],'home_score':p[4],'away_score':p[5]
+                    })
+                context={'week':selectedweek,'fixtures':fixtureDict,'teams':team_list}
+                return render(request,'weekBasedFixture.html',context)
+            elif (request.method=='POST'):
+                home_team=request.POST['home_name']
+                away_team=request.POST['away_name']
+                home_score=request.POST['home_score1']
+                away_score=request.POST['away_score1']
+                home_id=executeInSQL('select team_id from teams where team_name=\''+str(home_team)+'\'')
+                away_id=executeInSQL('select team_id from teams where team_name=\''+str(away_team)+'\'')
+                if(selectedweek>=gameweek):
+                    sql="""insert into FIXTURE
+                            (HOME_TEAM_SCORE, AWAY_TEAM_SCORE,GAMEWEEK, HOME_TEAM, AWAY_TEAM)
+                            values("""+str(home_score)+','+str(away_score)+','+str(selectedweek)+','+str(home_id)+','+str(away_id)+');'
+                    executeInSQL(sql)
+                sql="""SELECT MATCH_ID,GAMEWEEK,T1.TEAM_ABRV HOME_TEAM,T2.TEAM_ABRV AWAY_TEAM,HOME_TEAM_SCORE,AWAY_TEAM_SCORE
+                    FROM FIXTURE LEFT JOIN TEAM T1
+                    ON (FIXTURE.HOME_TEAM=T1.TEAM_ID)
+                    LEFT JOIN TEAM T2
+                    ON (FIXTURE.AWAY_TEAM=T2.TEAM_ID)
+                    WHERE GAMEWEEK="""+str(selectedweek)
+                result=executeInSQL(sql)
+                fixtureDict=[]
+                for p in result:
+                    fixtureDict.append({
+                    'match_id':p[0],'gameweek':p[1],'home':p[2],'away':p[3],'home_score':p[4],'away_score':p[5]
+                    })
+                context={'week':selectedweek,'fixtures':fixtureDict,'teams':team_list}
+                return render(request,'weekBasedFixture.html',context)
+                        
+        else:
+            return redirect('/admin/')
+
 def fixtureview(request):  
     list_gw=[]
     for i in range(1,20):
         list_gw.append(i) 
     if(user.is_authenticated):
         if(request.method=='POST'):
-            selectedWeek=0
-            selectedWeek=request.POST['fixture']
-            cursor=connection.cursor()
-            sql="""SELECT MATCH_ID,GAMEWEEK,T1.TEAM_ABRV HOME_TEAM,T2.TEAM_ABRV AWAY_TEAM,HOME_TEAM_SCORE,AWAY_TEAM_SCORE
-                FROM FIXTURE LEFT JOIN TEAM T1
-                ON (FIXTURE.HOME_TEAM=T1.TEAM_ID)
-                LEFT JOIN TEAM T2
-                ON (FIXTURE.AWAY_TEAM=T2.TEAM_ID)
-                WHERE GAMEWEEK="""+str(selectedWeek)
-            result=executeInSQL(sql)
-            fixtureDict=[]
-            for p in result:
-                fixtureDict.append({
-                'match_id':p[0],'gameweek':p[1],'home':p[2],'away':p[3],'home_score':p[4],'away_score':p[5]
-                })
-            context={'week':selectedWeek,'fixtures':fixtureDict}
-            return render(request,'weekBasedFixture.html',context)
+            selectedweek=request.POST['fixture']
+            return createfixtureview(request,selectedweek)
         else :
             context={'cur_gameweek':gameweek,'weeklist':list_gw,'user':user}
             return render(request,'showfixtures.html',context)

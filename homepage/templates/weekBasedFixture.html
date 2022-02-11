@@ -24,4 +24,39 @@
         </tr>
         {%endfor%}
     </table>
+    <h3>add fixture to current week</h3><br>
+    <form method='POST'>
+        {%csrf_token%}
+        <table width="50%" border="0">
+            <tr>
+                <th>home_team</th>
+                <th>away_team</th>
+                <th>home_score</th>
+                <th>away_score</th>
+            </tr>
+            <tr>
+            <td align="center"> <input type='text' value='{{player.first_name}}' name='{{player.player_id}}_first_name'> </td>
+            <td align="center"> <input type='text' value='{{player.second_name}}' name='{{player.player_id}}_second_name'> </td>
+            <td align="center">
+                <select name='home_name' class="form-select" aria-label="Default select example">
+                    {% for i in teams %}
+                        <option value="{{i}}">{{i}}</option>
+                    {% endfor %}
+                </select>
+            </td>
+            <td align="center">
+                <select name='away_name' class="form-select" aria-label="Default select example">
+                    {% for i in teams %}
+                        <option value="{{i}}">{{i}}</option>
+                    {% endfor %}
+                </select>
+            </td>
+            <td align="center"> <input type='text' name='home_score1'> </td>
+            <td align="center"> <input type='text' name='away_score1'> </td>
+            </tr>
+        </table>
+
+        <input type="submit" value="ADD">
+    </form>
+
 {% endblock body %}
