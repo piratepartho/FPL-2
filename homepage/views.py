@@ -123,17 +123,20 @@ def createfixtureview(request,selectedweek):
                 context={'week':selectedweek,'fixtures':fixtureDict,'teams':team_list}
                 return render(request,'weekBasedFixture.html',context)
             elif (request.method=='POST'):
-                home_team=request.POST['home_name']
-                away_team=request.POST['away_name']
-                home_score=request.POST['home_score1']
-                away_score=request.POST['away_score1']
-                home_id=executeInSQL('select team_id from teams where team_name=\''+str(home_team)+'\'')
-                away_id=executeInSQL('select team_id from teams where team_name=\''+str(away_team)+'\'')
-                if(selectedweek>=gameweek):
+                home_team=request.POST.get('home_name', 'Chelsea')
+                away_team=request.POST.get('away_name','Chelsea')
+                home_score=request.POST.get('home_score1',0)
+                away_score=request.POST.get('away_score1',0)
+                home_id=executeInSQL('select team_id from team where team_name=\''+str(home_team)+'\'')
+                away_id=executeInSQL('select team_id from team where team_name=\''+str(away_team)+'\'')
+                if(selectedweek>=str(gameweek)):
                     sql="""insert into FIXTURE
                             (HOME_TEAM_SCORE, AWAY_TEAM_SCORE,GAMEWEEK, HOME_TEAM, AWAY_TEAM)
                             values("""+str(home_score)+','+str(away_score)+','+str(selectedweek)+','+str(home_id)+','+str(away_id)+');'
-                    executeInSQL(sql)
+                    cursor=connection.cursor()
+                    cursor.execute(sql)
+                    cursor.close()
+                    
                 sql="""SELECT MATCH_ID,GAMEWEEK,T1.TEAM_ABRV HOME_TEAM,T2.TEAM_ABRV AWAY_TEAM,HOME_TEAM_SCORE,AWAY_TEAM_SCORE
                     FROM FIXTURE LEFT JOIN TEAM T1
                     ON (FIXTURE.HOME_TEAM=T1.TEAM_ID)
