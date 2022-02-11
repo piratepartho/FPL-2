@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+{% block title %}
+    Edit Home Team Stat
+{% endblock title %}
+{% block body %}
+    <form action="save/" method="post">
+        {%csrf_token%}
+        <input type="hidden" name="">
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th scope="col">Name</th>
+                <th scope="col">Goal Scored</th>
+                <th scope="col">Assist</th>
+                <th scope="col">Minutes Played</th>
+                <th scope="col">Yellow Cards</th>
+                <th scope="col">Red Cards</th>
+                <th scope="col">Own Goal</th>
+                <th scope="col">Penalties Missed</th>
+                <th scope="col">Saves</th>
+                <th scope="col">Penalties Saved</th>
+            </tr>
+            </thead>
+            <tbody>
+                {% for p in players %}
+                    <tr>
+                        <td>{{p.first_name}} {{p.second_name}}</td>
+                        <td><input type="number" name="goalScored{{p.player_id}}" value="0"></td>
+                        <td><input type="number" name="assist{{p.player_id}}" value="0"></td>
+                        <td><input type="number" name="minutes{{p.player_id}}" value="0"></td>
+                        <td><input type="number" name="yellow{{p.player_id}}" value="0"></td>
+                        <td><input type="number" name="red{{p.player_id}}" value="0"></td>
+                        <td><input type="number" name="ownGoal{{p.player_id}}" value="0"></td>
+                        <td><input type="number" name="penMiss{{p.player_id}}" value="0"></td>
+                        <td>
+                            {% if p.position == "Goalkeeper" %}  <input type="number" name="saves{{p.player_id}}" value="0"> 
+                            {%else%} <input type="hidden" name="saves{{p.player_id}}" value="0">
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if p.position == "Goalkeeper" %}  <input type="number" name="penSaves{{p.player_id}}" value="0"> 
+                            {%else%} <input type="hidden" name="penSaves{{p.player_id}}" value="0">
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <button type="submit">Save And Go To Away Team</button>
+    </form>
+{% endblock body %}

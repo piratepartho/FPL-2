@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% block title %}
+    Give The Score 
+{% endblock title %}
+{% block body %}
+<div class="row g-3">
+    <form action="saveScore/" method="post">
+        {%csrf_token%}
+        <div class="col-3">
+            <input type="text" name="homeScore" value="" class="form-control" placeholder="Home Score">
+            <input type="text" name="awayScore" value="" class="form-control" placeholder="Away Score">
+            <button type="submit" class="form-control">Submit and Edit {{homeTeamName}} Players</button>
+        </div>
+    </form>
+</div>
+{% endblock body %}

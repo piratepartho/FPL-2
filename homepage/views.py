@@ -1,3 +1,4 @@
+from unittest import result
 from django.http import HttpResponse
 from django.shortcuts import render,redirect
 from django.contrib import messages
@@ -196,4 +197,56 @@ def addStatFixtureView(request):
     return render(request,'statFixtureSelect.html',context)
     
 def addStatScoreView(request,match_id):
+    homeTeamName=executeInSQL('select TEAM_NAME from TEAM where TEAM_ID=(select HOME_TEAM from FIXTURE where MATCH_ID=1);')[0][0]
+    awayTeamName=executeInSQL('select TEAM_NAME from TEAM where TEAM_ID=(select AWAY_TEAM from FIXTURE where MATCH_ID=1);')[0][0]
+
+    context={'match_id':match_id,'homeTeamName':homeTeamName,'awayTeamName':awayTeamName}
+    return render(request,'addStat/score.html',context)
+
+def addStatSaveScoreView(request,match_id):
+    homeScore=request.POST['homeScore']
+    awayScore=request.POST['awayScore']
+    insertInSQL(f'update FIXTURE set HOME_TEAM_SCORE={homeScore}, AWAY_TEAM_SCORE={awayScore} where MATCH_ID={match_id};')
+    return redirect('../../homePlayers/')
+
+def addStatHomePlayersView(request,match_id):
+
+    homeTeamID=executeInSQL(f'select home_team,away_team from fixture where match_id={match_id}')[0][0]
+    result=executeInSQL(f'select * from PLAYER where TEAM_ID={homeTeamID}')
+    
+    playersDict=[]
+    for p in result:
+        playersDict.append({
+            'player_id':p[0],'first_name':p[1],'second_name':p[2],'position':p[3],'value':p[6]/10,'points':p[5]
+            })
+
+    context={'players':playersDict}
+    return render(request,'addStat/homePlayers.html',context)
+
+def addStatHomePlayersSaveView(request,match_id):
+    homeTeamID=executeInSQL(f'select home_team,away_team from fixture where match_id={match_id}')[0][0]
+    result=executeInSQL(f'select * from PLAYER where TEAM_ID={homeTeamID}')
+
+    for p in result:
+        id=p[0]
+        # MATCH_ID, GAMEWEEK, MIN_PLAYED, GOALS_SCORED, ASSIST, OWN_GOAL, PENALTIES_SAVED, PENALTIES_MISSED, YELLOW_CARDS, RED_CARDS, SAVES
+        minutes=request.POST[f'minutes{id}']
+        gs=request.POST[f'goalScored{id}']
+        ass=request.POST[f'assist{id}']
+        own=request.POST[f'ownGoal{id}']
+        penMiss=request.POST[f'penMiss{id}']
+        yellow=request.POST[f'yellow{id}']
+        red=request.POST[f'red{id}']
+        penSave=request.POST[f'penSaves{id}']
+        save=request.POST[f'saves{id}']
+
+        insertInSQL(f"""INSERT INTO PLAYER_STAT
+                    (MATCH_ID, GAMEWEEK, MIN_PLAYED, GOALS_SCORED, ASSIST, OWN_GOAL, PENALTIES_SAVED, PENALTIES_MISSED, YELLOW_CARDS, RED_CARDS, SAVES,  PLAYER_ID) 
+                    VALUES
+                    ({match_id},{gameweek},{minutes},{gs},{ass},{own},{penSave},{penMiss},{yellow},{red},{save},{id})"""
+                )
+
+    return redirect('../../awayPlayers/')
+
+def addStatAwayPlayersView(request,match_id):
     pass
