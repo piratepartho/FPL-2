@@ -14,5 +14,8 @@ urlpatterns=[
     path('addFixture/',views.addFixture,name='addFixture'),
     path('addStat/selectFixture/',views.addStatFixtureView,name='statFixtureSelect'),
     path('addStat/<int:match_id>/score/',views.addStatScoreView,name='addStatScore'),
+    path('addStat/<int:match_id>/score/saveScore/',views.addStatSaveScoreView,name='addStatSaveScore'),
+    path('addStat/<int:match_id>/homePlayers/',views.addStatHomePlayersView,name='addStatHomePlayers'),
+
 ]
 

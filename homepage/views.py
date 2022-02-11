@@ -196,4 +196,18 @@ def addStatFixtureView(request):
     return render(request,'statFixtureSelect.html',context)
     
 def addStatScoreView(request,match_id):
+    homeTeamName=executeInSQL('select TEAM_NAME from TEAM where TEAM_ID=(select HOME_TEAM from FIXTURE where MATCH_ID=1);')[0][0]
+    awayTeamName=executeInSQL('select TEAM_NAME from TEAM where TEAM_ID=(select AWAY_TEAM from FIXTURE where MATCH_ID=1);')[0][0]
+
+    context={'match_id':match_id,'homeTeamName':homeTeamName,'awayTeamName':awayTeamName}
+    return render(request,'addStatScore.html',context)
+
+def addStatSaveScoreView(request,match_id):
+    homeScore=request.POST['homeScore']
+    awayScore=request.POST['awayScore']
+    insertInSQL(f'update FIXTURE set HOME_TEAM_SCORE={homeScore}, AWAY_TEAM_SCORE={awayScore} where MATCH_ID={match_id};')
+    return redirect('../../homePlayers/')
+
+def addStatHomePlayersView(request,match_id):
     pass
+
