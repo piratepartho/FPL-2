@@ -1,3 +1,4 @@
+from django.http import HttpResponse
 from django.shortcuts import render,redirect
 from django.contrib import messages
 from django.db import connection
@@ -11,6 +12,11 @@ def executeInSQL(sql):
     result=cursor.fetchall()
     cursor.close()
     return result
+
+def insertInSQL(sql):
+    cursor=connection.cursor()
+    cursor.execute(sql)
+    cursor.close()
 
 # Create your views here.
 def showLoginPage(request):
@@ -102,14 +108,14 @@ def show_teams(request):
         dict.append({'id':team_id,'abbvr':team_abbvr,'name':team_name})
     
     return render(request,'show_teams.html',{'all_teams':dict,'user':user})
-def createfixtureview(request):
-        if(user.is_authenticated):
-            return 
+
 def fixtureview(request):  
     list_gw=[]
     for i in range(1,20):
         list_gw.append(i) 
+    
     if(user.is_authenticated):
+
         if(request.method=='POST'):
             selectedWeek=0
             selectedWeek=request.POST['fixture']
@@ -128,8 +134,52 @@ def fixtureview(request):
                 })
             context={'week':selectedWeek,'fixtures':fixtureDict}
             return render(request,'weekBasedFixture.html',context)
+
+
         else :
             context={'cur_gameweek':gameweek,'weeklist':list_gw,'user':user}
             return render(request,'showfixtures.html',context)
+    
+    
     else:
         return redirect('/admin/')
+
+def getFixtureView(request):
+    selectedWeek = request.POST['fixture']
+    sql="""SELECT MATCH_ID,GAMEWEEK,T1.TEAM_ABRV HOME_TEAM,T2.TEAM_ABRV AWAY_TEAM,HOME_TEAM_SCORE,AWAY_TEAM_SCORE
+                FROM FIXTURE LEFT JOIN TEAM T1
+                ON (FIXTURE.HOME_TEAM=T1.TEAM_ID)
+                LEFT JOIN TEAM T2
+                ON (FIXTURE.AWAY_TEAM=T2.TEAM_ID)
+                WHERE GAMEWEEK="""+str(selectedWeek)
+    result=executeInSQL(sql)
+    dict=[]
+    for r in result:
+        dict.append({'match_id':r[0],'gameweek':r[1],'home':r[2],'away':r[3],'home_score':r[4],'away_score':r[5]})
+    context={'fixtures':dict}
+    return render(request,'weekBasedFixture.html',context)
+
+
+def addFixture(request):
+    if request.method=='GET':
+        sql='select Team_Name from Team'
+        team_list=[]
+        for team in executeInSQL(sql):
+            team_list.append(team[0])
+        context={'weeklist':range(gameweek,20),'teams':team_list}
+        return render(request,'addFixture.html',context)
+    elif request.method=='POST':
+        gw=request.POST['fixture']
+        homeTeam=request.POST['homeTeam']
+        awayTeam=request.POST['awayTeam']
+        homeTeamID=executeInSQL( f"SELECT TEAM_ID FROM TEAM WHERE TEAM_NAME='{homeTeam}' ")[0][0]
+        awayTeamID=executeInSQL(f"SELECT TEAM_ID FROM TEAM WHERE TEAM_NAME='{awayTeam}' ") [0][0]
+        sql= f"""INSERT INTO FIXTURE
+                (GAMEWEEK, HOME_TEAM, AWAY_TEAM)
+                VALUES
+                ({gw},{homeTeamID},{awayTeamID});"""
+        insertInSQL(sql)
+        return redirect( '/admin/addFixture/')
+
+    
+    

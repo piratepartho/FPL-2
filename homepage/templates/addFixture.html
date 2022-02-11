@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Add Fixture
+{% endblock title %}
+
+{% block body %}
+    <form method='POST' >
+        {%csrf_token%}
+        Gameweek:
+        <select name='fixture' class="form-select" aria-label="Default select example">
+            {% for i in weeklist %}
+                <option value="{{i}}">{{i}}</option>
+            {% endfor %}
+        </select>
+        Home Team:
+        <select name='homeTeam' class="form-select" aria-label="Default select example">
+            {% for i in teams %}
+                <option value="{{i}}">{{i}}</option>
+            {% endfor %}
+        </select>
+        Away Team:
+        <select name='awayTeam' class="form-select" aria-label="Default select example">
+            {% for i in teams %}
+                <option value="{{i}}">{{i}}</option>
+            {% endfor %}
+        </select>
+        <input type="submit" value="ADD">
+    </form>
+{% endblock body %}
