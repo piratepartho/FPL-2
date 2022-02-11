@@ -31,7 +31,7 @@ def loginView(request):
             user.is_authenticated=True
         if(user.is_authenticated):
             user=homepage.classes.User(user_num[0][1],user_num[0][0],True)
-            user.setTeamName(user_num[0][4])
+            user.team.setTeamName(user_num[0][4])
             return redirect('/home/')
         else:
             messages.error(request,'Login Credentials Invalid')

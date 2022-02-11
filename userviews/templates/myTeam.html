@@ -8,7 +8,11 @@ Team {{user.team_name}}
 {% if user.is_authenticated %}
 
 <h3>Defenders</h3>
-<button type="submit"></button>
+{% for p in user.team.player %}
+    {% if p.position is 'Goalkeeper' %}
+        <p>p.name</p>
+    {% endif %}
+{% endfor %}
 
 
 
