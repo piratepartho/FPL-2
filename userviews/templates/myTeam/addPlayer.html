@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Add Player To {{user.team_name}}
+{% endblock title %}
+
+{% block body %}
+    <a href="{%url 'userTeamPage' user_id %}"><button>Go Back</button></a>
+    <form action="getPlayerData/" method="post">
+        <select name='position' class="form-select" aria-label="Default select example" hx-post="getPlayerData/" hx-target="#playerTable">
+            <option value="">--Please choose an option--</option>
+            <option value="Goalkeeper">Goalkeeper</option>
+            <option value="Defender">Defender</option>
+            <option value="Midfielder">Midfielder</option>
+            <option value="Forward">Forward</option>
+        </select>
+    </form>
+    {% include "partials/selectedPlayers.html"%}
+{% endblock body %}

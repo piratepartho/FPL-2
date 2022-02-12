@@ -24,9 +24,10 @@ class Team:
 
     def addPlayer(self,id,name,position,cost):
         if(len(self.player)>=11):
-            return
+            return False
         self.player.append(Player(id,name,position,cost))
         self.total_cost+=cost
+        return True
 
     
 

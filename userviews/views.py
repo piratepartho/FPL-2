@@ -1,9 +1,11 @@
 from distutils.util import execute
+from django.http import HttpResponse
 from django.shortcuts import render,redirect
 from django.contrib import messages
 from django.db import connection
 import homepage.classes
-from homepage.views import gameweek as currentGameweek
+from homepage.views import gameweek as currentGameweek, insertInSQL
+import userviews.functions as functions
 
 user=homepage.classes.User()
 def executeInSQL(sql):
@@ -12,6 +14,7 @@ def executeInSQL(sql):
     result=cursor.fetchall()
     cursor.close()
     return result
+
 # Create your views here.
 
 def loginView(request):
@@ -32,7 +35,14 @@ def loginView(request):
         if(user.is_authenticated):
             user=homepage.classes.User(user_num[0][1],user_num[0][0],True)
             user.team.setTeamName(user_num[0][4])
+
+            #DONE TODO: load user.team data from database
+            result=executeInSQL(f'select * from PLAYER where PLAYER_ID in (select PLAYER_ID from FIELD_PLAYER where USER_ID={user.id} and GAMEWEEK={currentGameweek})')
+            for p in result:
+                user.team.addPlayer(p[0],p[1]+' '+p[2],p[3],p[6]/10)
             return redirect('/home/')
+            #DONE
+
         else:
             messages.error(request,'Login Credentials Invalid')
             return redirect('/')
@@ -70,15 +80,46 @@ def createUserView(request):
                     (USER_NAME, EMAIL, PASSWORD, TEAM_NAME) 
                     values
                     (\'"""+str(username)+'\',\''+str(email)+'\',\''+str(password)+'\',\''+str(team_name)+'\')'
-            cursor=connection.cursor()
-            cursor.execute(sql)
-            cursor.close()
+            insertInSQL(sql)
+            #fetching user_id
+            sql=f'select USER_ID from users where user_name=\'{username}\';'
+            user_id=executeInSQL(sql)[0][0]
+            sql=f'insert into USER_TEAM (USER_ID,GAMEWEEK,POINTS) values ({user_id},{currentGameweek},0);'
+            insertInSQL(sql)
             return redirect('/')
 
 
 def myTeamView(request,user_id):
     if(user.is_authenticated) :
         context={'user_id':user_id,'user':user}
-        return render(request,'myTeam.html',context)
+        return render(request,'myTeam/myTeam.html',context)
     else:
         return redirect('/')
+
+def addPlayerView(request,user_id):
+    if not user.is_authenticated:
+        return redirect('/')
+    
+    context={'user_id':user_id,'user':user}
+    return render(request,'myTeam/addPlayer.html',context)
+
+def getPlayerData(request,user_id):
+    requestedPosition=request.POST['position']
+    result=executeInSQL(f'select * from Player where position=\'{requestedPosition}\'')
+    playersDict=[]
+    for p in result:
+        playersDict.append({
+            'player_id':p[0],'first_name':p[1],'second_name':p[2],'position':p[3],'value':p[6]/10,'points':p[5]
+            })
+    return render (request,'partials/selectedPlayers.html',{'players':playersDict,'user_id':user.id})
+
+def addToUserTeam(requset,user_id,player_id):
+    result=executeInSQL(f'select * from player where player_id={player_id}')
+    #only added to the current user in server
+    response=user.team.addPlayer(result[0][0],result[0][1]+' '+result[0][2],result[0][3],result[0][6]/10)
+    #added to the database for the current Gameweek
+    insertInSQL(f'insert into FIELD_PLAYER values({user_id},{currentGameweek},{player_id});')
+    if response:
+        return HttpResponse("Player Added")
+    else:
+        return HttpResponse("Player Not Added")

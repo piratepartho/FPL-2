@@ -1,0 +1,21 @@
+{%extends 'base.html' %}
+
+{%block title %} 
+Team {{user.team_name}}
+{%endblock%}
+
+{%block body %}
+{% if user.is_authenticated %}
+
+<ul>
+    {% for player in user.team.player %}
+    <li> {{player.name}} {{player.position}} {{player.cost}}</li>
+    {% endfor %}    
+</ul>
+
+<a href="addPlayer/"><button type="button" class="btn btn-sm btn-primary" disabled>Add Player</button></a>
+
+{%else%}
+<a href='/'>not logged in,login to enter</a>
+{% endif %}
+{% endblock %}
