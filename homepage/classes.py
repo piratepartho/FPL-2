@@ -30,13 +30,13 @@ class Team:
         for p in self.player:
             if p.position==position:
                 cnt+=1
-        if position=='Goalkeeper' and cnt<=1:
+        if position=='Goalkeeper' and cnt<1:
             return True
-        if position=='Midfielder' and cnt<=3:
+        if position=='Midfielder' and cnt<3:
             return True
-        if position=='Defender' and cnt<=4:
+        if position=='Defender' and cnt<4:
             return True
-        if position=='Forward' and cnt<=3:
+        if position=='Forward' and cnt<3:
             return True
         return False
     
@@ -59,8 +59,14 @@ class Team:
         self.total_cost+=cost
         return 'Player Added'
         
-
-
+    def deletePlayer(self,id):
+        for p in self.player:
+            if p.id==id:
+                print(len(self.player))
+                self.player.remove(p)
+                print(len(self.player))
+                return True
+        return False
     
 
 class User:

@@ -124,3 +124,12 @@ def addToUserTeam(requset,user_id,player_id):
         return HttpResponse(response)
     else:
         return HttpResponse(response)
+
+
+def deletePlayerView(request,user_id,player_id):
+    if(user.team.deletePlayer(player_id)):
+        insertInSQL(f'delete from FIELD_PLAYER where PLAYER_ID={player_id} and USER_ID={user_id};')
+        context={'user_id':user_id,'user':user}
+        return render(request,'partials/myPlayers.html',context)
+    else:
+        return HttpResponse("Delete Failed")
