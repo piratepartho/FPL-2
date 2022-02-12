@@ -1,0 +1,30 @@
+<div id="myplayertable">
+    <table  class="table table-striped">
+        <thead>
+        <tr>
+            <th scope="col">Name</th>
+            <th scope="col">Position</th>
+            <th scope="col">Cost</th>
+        </tr>
+        </thead>
+        <tbody>
+            {% for player in user.team.player %}
+                <tr>
+                    <td style="width:20%">{{player.name}}</td>
+                    <td style="width:20%">{{player.position}}</td>
+                    <td style="width:20%">{{player.cost}}</td>
+                    <td><div>
+                        <button 
+                            hx-delete="{% url 'deletePlayer' user_id player.id %}"
+                            hx-target="#myplayertable"
+                            hx-confirm="Sure?"
+                        >
+                            Delete Player
+                        </button>
+                    </div>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
