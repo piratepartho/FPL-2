@@ -117,9 +117,10 @@ def addToUserTeam(requset,user_id,player_id):
     result=executeInSQL(f'select * from player where player_id={player_id}')
     #only added to the current user in server
     response=user.team.addPlayer(result[0][0],result[0][1]+' '+result[0][2],result[0][3],result[0][6]/10)
-    #added to the database for the current Gameweek
-    insertInSQL(f'insert into FIELD_PLAYER values({user_id},{currentGameweek},{player_id});')
-    if response:
-        return HttpResponse("Player Added")
+    
+    if response=='Player Added':
+        #added to the database for the current Gameweek
+        insertInSQL(f'insert into FIELD_PLAYER values({user_id},{currentGameweek},{player_id});')
+        return HttpResponse(response)
     else:
-        return HttpResponse("Player Not Added")
+        return HttpResponse(response)

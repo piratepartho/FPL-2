@@ -1,19 +1,39 @@
 {%extends 'base.html' %}
 
 {%block title %} 
-Team {{user.team_name}}
+Team {{user.team.name}}
 {%endblock%}
 
-{%block body %}
+{% block body %}
 {% if user.is_authenticated %}
 
-<ul>
+<!-- <ul>
     {% for player in user.team.player %}
     <li> {{player.name}} {{player.position}} {{player.cost}}</li>
     {% endfor %}    
-</ul>
+</ul> -->
+
+<table  class="table table-striped">
+    <thead>
+    <tr>
+        <th scope="col">Name</th>
+        <th scope="col">Position</th>
+        <th scope="col">Cost</th>
+    </tr>
+    </thead>
+    <tbody>
+        {% for player in user.team.player %}
+            <tr>
+                <td style="width:20%">{{player.name}}</td>
+                <td style="width:20%">{{player.position}}</td>
+                <td style="width:20%">{{player.cost}}</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
 
 <a href="addPlayer/"><button type="button" class="btn btn-sm btn-primary" disabled>Add Player</button></a>
+<a href="{%url 'userHomePage'%}"><button type="button" class="btn btn-sm btn-primary" disabled>Back</button></a>
 
 {%else%}
 <a href='/'>not logged in,login to enter</a>
