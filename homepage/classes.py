@@ -2,6 +2,16 @@
 from gc import get_count
 from django.db import connection
 
+def customcmp(x):
+        if(x.position=='Goalkeeper'):
+            return 1,x.cost
+        elif x.position=='Defender':
+            return 2,x.cost
+        elif x.position=='Midfielder':
+            return 3,x.cost
+        else: 
+            return 4,x.cost
+
 class Player:
     name=None
     position=None
@@ -47,6 +57,7 @@ class Team:
                 return True
         return False
 
+
     def addPlayer(self,id,name,position,cost):
         if(len(self.player)>=11):
             return 'Limit Reached'
@@ -54,17 +65,20 @@ class Team:
             return f'{position} Maxed'
         if self.isSamePlayer(id):
             return f'Already Added'
+        if self.total_cost+cost>70:
+            return f'Not Enough Money'
         
         self.player.append(Player(id,name,position,cost))
         self.total_cost+=cost
+        #sort the players
+        self.player.sort(key=customcmp)
         return 'Player Added'
         
     def deletePlayer(self,id):
         for p in self.player:
             if p.id==id:
-                print(len(self.player))
+                self.total_cost-=p.cost
                 self.player.remove(p)
-                print(len(self.player))
                 return True
         return False
     
