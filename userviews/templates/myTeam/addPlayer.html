@@ -7,13 +7,22 @@
 {% block body %}
     <a href="{%url 'userTeamPage' user_id %}"><button>Go Back</button></a>
     <form action="getPlayerData/" method="post">
-        <select name='position' class="form-select" aria-label="Default select example" hx-post="getPlayerData/" hx-target="#playerTable">
-            <option value="">--Please choose an option--</option>
-            <option value="Goalkeeper">Goalkeeper</option>
-            <option value="Defender">Defender</option>
-            <option value="Midfielder">Midfielder</option>
-            <option value="Forward">Forward</option>
-        </select>
+        <div class='d-flex justify-content-between' hx-post="getPlayerData/" hx-target="#playerTable" hx-trigger="change">
+            <select name="teamID" class="form-select">
+                <option value="">--Please choose a Team--</option>
+                {% for t in teams %}
+                    <option value="{{t.id}}">{{t.team_name}}</option>
+                {% endfor %}
+            </select>
+            <select name='position' class="form-select" aria-label="Default select example" >
+                <option value="">--Please choose an option--</option>
+                <option value="Goalkeeper">Goalkeeper</option>
+                <option value="Defender">Defender</option>
+                <option value="Midfielder">Midfielder</option>
+                <option value="Forward">Forward</option>
+            </select>
+        </div>
+        
     </form>
     {% include "partials/selectedPlayers.html"%}
 {% endblock body %}

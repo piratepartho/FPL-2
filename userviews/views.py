@@ -99,13 +99,20 @@ def myTeamView(request,user_id):
 def addPlayerView(request,user_id):
     if not user.is_authenticated:
         return redirect('/')
+    result=executeInSQL('select TEAM_ID,team_name from TEAM;')
+    teams=[]
+    for t in result:
+        teams.append({'id':t[0],'team_name':t[1]})
     
-    context={'user_id':user_id,'user':user}
+    context={'user_id':user_id,'user':user,'teams':teams}
     return render(request,'myTeam/addPlayer.html',context)
 
 def getPlayerData(request,user_id):
     requestedPosition=request.POST['position']
-    result=executeInSQL(f'select * from Player where position=\'{requestedPosition}\'')
+    requestedTeam=request.POST['teamID']
+    # sql=f'select * from Player where team_id={requestedTeam} and position=\'{requestedPosition}\''
+    sql=functions.makeSearchSQL(requestedTeam,requestedPosition)
+    result=executeInSQL(sql)
     playersDict=[]
     for p in result:
         playersDict.append({
