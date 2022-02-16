@@ -1,8 +1,10 @@
 from distutils.util import execute
+from random import gammavariate
 from django.http import HttpResponse
 from django.shortcuts import render,redirect
 from django.contrib import messages
 from django.db import connection
+from FPLdjango.function import loadGameWeek
 import homepage.classes
 from homepage.views import gameweek as currentGameweek, insertInSQL
 import userviews.functions as functions
@@ -19,7 +21,9 @@ def executeInSQL(sql):
 
 def loginView(request):
     global user
+    global currentGameweek
     if user.is_authenticated:
+        currentGameweek=loadGameWeek()
         return redirect('/home/')
     
     if(request.method=='GET'):
