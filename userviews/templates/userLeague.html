@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    League
+{% endblock title %}    
+
+{% block body %}
+    <div class="container">
+        <form action="post">
+            <input type="text" name="leagueName" >
+            <input type="hidden" name="user_id" value="{{user_id}}">
+            <button class="btn btn-success" hx-post="{%url 'createLeague'%}" hx-target="#messages">Create League</button>
+        </form>
+        <div id="messages"></div>
+    </div>
+{% endblock body %}

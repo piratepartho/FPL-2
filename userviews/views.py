@@ -1,5 +1,7 @@
 from distutils.util import execute
+from email import contentmanager
 from random import gammavariate
+import re
 from django.http import HttpResponse
 from django.shortcuts import render,redirect
 from django.contrib import messages
@@ -144,3 +146,21 @@ def deletePlayerView(request,user_id,player_id):
         return render(request,'partials/myPlayers.html',context)
     else:
         return HttpResponse("Delete Failed")
+
+
+#League Views
+def leagueView(request,user_id):
+    #TODO: pass all the league the user is in
+    context={'user_id':user_id,'user':user}
+    return render(request,'userLeague.html',context)
+
+def createLeagueView(request):
+    user_id=request.POST['user_id']
+    leagueName=request.POST['leagueName']
+    request=executeInSQL(f'select count(*) from LEAGUE where LEAGUE_NAME=\'{leagueName}\';')[0][0]
+    if request==0:
+        insertInSQL(f'insert into LEAGUE (LEAGUE_NAME,ADMIN) values(\'{leagueName}\',{user_id});')
+        return HttpResponse(f'<div class="text text-success">{leagueName} created</div>')
+    else:
+        return HttpResponse(f'<div class="text text-danger">A league already exists with {leagueName}</div>')
+    

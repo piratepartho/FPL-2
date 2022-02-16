@@ -2,9 +2,12 @@
 
 {%block body%}
 {% if user.is_authenticated %}
-    <h1 align="center">Welcome,{{user.username}}</h1>
-    <li><a href='{% url 'userTeamPage' user.id %}'> View your Team</li>
-    <a href='logout/'>logout</a>
+    <div class="container">
+        <h1 align="center">Welcome, {{user.username}}</h1>
+        <a href='{% url 'userTeamPage' user.id %}'> View your Team</a><br>
+        <a href="{%url 'userLeague' user.id %}">Leagues</a><br>
+        <a href="logout/" class="btn btn-secondary">Logout</a>
+    </div>
 {%else%}
 <a href='/'>Not logged in, Login to enter</a>
 {% endif %}

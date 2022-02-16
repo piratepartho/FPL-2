@@ -9,6 +9,9 @@ urlpatterns=[
 
     path('home/<int:user_id>/myTeam/',userviews.views.myTeamView,name='userTeamPage'),
     path('home/<int:user_id>/myTeam/addPlayer/',userviews.views.addPlayerView,name='userPlayerAddPage'),
+
+    path('home/<int:user_id>/league/',userviews.views.leagueView,name='userLeague'),
+    path('createLeague/',userviews.views.createLeagueView,name='createLeague'),
 ]
 
 htmx_urlpatterns=[
