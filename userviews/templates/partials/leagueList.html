@@ -1,0 +1,15 @@
+<div class="container my-5">
+    <div class="row">
+        <div class="col-4">
+            <div class="h3 text-center ">My Leagues</div>
+                <table class="table table-striped">
+                    {% for league in userLeague %}
+                        <tr>
+                            <td align="center"><a href="#">{{league.name}}</a></td>
+                        </tr>
+                    {% endfor %}  
+                    
+                </table>
+        </div>
+    </div>
+</div>

@@ -19,6 +19,7 @@ htmx_urlpatterns=[
     path('home/<int:user_id>/addToUser/<int:player_id>',userviews.views.addToUserTeam,name='addToUserTeam'),
     #path('home/<int:user_id>/deleteFromUser/<int:player_id>',userviews.views.addToUserTeam,name='addToUserTeam'),
     path('deletePlayer/<int:user_id>/<int:player_id>/',userviews.views.deletePlayerView,name='deletePlayer'),
+    path('showLeagueList/<int:user_id>/',userviews.views.showUserLeague,name='showUserLeague'),
 ]
 
 urlpatterns+=htmx_urlpatterns

@@ -151,7 +151,11 @@ def deletePlayerView(request,user_id,player_id):
 #League Views
 def leagueView(request,user_id):
     #TODO: pass all the league the user is in
-    context={'user_id':user_id,'user':user}
+    result=executeInSQL(f'select league_code,LEAGUE_NAME from LEAGUE where league_code in (select LEAGUE_CODE from LEAGUE_TEAMS where USER_ID={user_id});')
+    leagueList=[]
+    for league in result:
+        leagueList.append({'code':league[0],'name':league[1]})
+    context={'user_id':user_id,'user':user,'userLeague':leagueList}
     return render(request,'userLeague.html',context)
 
 def createLeagueView(request):
@@ -160,7 +164,16 @@ def createLeagueView(request):
     request=executeInSQL(f'select count(*) from LEAGUE where LEAGUE_NAME=\'{leagueName}\';')[0][0]
     if request==0:
         insertInSQL(f'insert into LEAGUE (LEAGUE_NAME,ADMIN) values(\'{leagueName}\',{user_id});')
-        return HttpResponse(f'<div class="text text-success">{leagueName} created</div>')
+        response= HttpResponse(f'<div class="text text-success">{leagueName} created</div>')
+        response.headers['HX-Trigger']="newLeague"
+        return response
     else:
         return HttpResponse(f'<div class="text text-danger">A league already exists with {leagueName}</div>')
+
+def showUserLeague(request,user_id):
+    result=executeInSQL(f'select league_code,LEAGUE_NAME from LEAGUE where league_code in (select LEAGUE_CODE from LEAGUE_TEAMS where USER_ID={user_id});')
+    leagueList=[]
+    for league in result:
+        leagueList.append({'code':league[0],'name':league[1]})
+    return render(request,'partials/leagueList.html',{'userLeague':leagueList})
     
