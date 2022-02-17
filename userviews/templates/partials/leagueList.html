@@ -1,15 +1,25 @@
 <div class="container my-5">
-    <div class="row">
+    <div class="row justify-content-between">
         <div class="col-4">
             <div class="h3 text-center ">My Leagues</div>
                 <table class="table table-striped">
                     {% for league in userLeague %}
                         <tr>
-                            <td align="center"><a href="#">{{league.name}}</a></td>
+                            <td align="center"><a href="{%url 'showLeague' user_id league.code%}">{{league.name}}</a></td>
                         </tr>
                     {% endfor %}  
-                    
                 </table>
+        </div>
+        <div class="col-6">
+            <div class="h3 text-center">Join Leagues</div>
+            <table class="table table-striped">
+                {% for league in joinableLeague %}
+                    <tr>
+                        <td class="text-center">{{league.name}}</td>
+                        <td><button class="btn btn-success" hx-post="{%url 'joinLeague' user_id league.code%}">Join</button></td>
+                    </tr>
+                {% endfor %}
+            </table>
         </div>
     </div>
 </div>
