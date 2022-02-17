@@ -12,6 +12,10 @@ urlpatterns=[
 
     path('home/<int:user_id>/league/',userviews.views.leagueView,name='userLeague'),
     path('createLeague/',userviews.views.createLeagueView,name='createLeague'),
+
+    #particular league info urls
+    path('<int:user_id>/<int:leagueCode>/show/',userviews.views.showLeague,name='showLeague'),
+    path('leaveLeague/<int:user_id>/<int:leagueCode>/',userviews.views.leaveLeague,name='leaveLeague'),
 ]
 
 htmx_urlpatterns=[
@@ -20,6 +24,7 @@ htmx_urlpatterns=[
     #path('home/<int:user_id>/deleteFromUser/<int:player_id>',userviews.views.addToUserTeam,name='addToUserTeam'),
     path('deletePlayer/<int:user_id>/<int:player_id>/',userviews.views.deletePlayerView,name='deletePlayer'),
     path('showLeagueList/<int:user_id>/',userviews.views.showUserLeague,name='showUserLeague'),
+    path('joinLeague/<int:user_id>/<int:leagueCode>/',userviews.views.joinLeague,name='joinLeague'),
 ]
 
 urlpatterns+=htmx_urlpatterns

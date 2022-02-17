@@ -14,7 +14,8 @@
         <div id="messages"></div>
     </div>
 
-    <div id="leagueList" hx-get="{% url 'showUserLeague' user_id %}" hx-trigger="newLeague from:body" hx-swap="innerHTML">{% include 'partials/leagueList.html' %}</div>
-    
+    <div id="leagueList" hx-get="{% url 'showUserLeague' user_id %}" hx-trigger="newLeague from:body" hx-swap="innerHTML">
+        {% include 'partials/leagueList.html' %}
+    </div>
 
 {% endblock body %}
