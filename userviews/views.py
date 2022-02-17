@@ -200,11 +200,29 @@ def showLeague(request,user_id,leagueCode):
         teamName=executeInSQL(f'select team_name from users where USER_ID={id};')[0][0]
         teamPoint=executeInSQL(f'select GET_LEAGUE_TEAMS_POINTS({leagueCode},{id}) from dual;')[0][0]
         users.append({'userID':id,'teamName':teamName,'teamPoint':teamPoint})
+    
+    users.sort(key=functions.sortOnPoint)
+    
+    rank=1
+    for user in users:
+        user['rank']=rank
+        rank+=1
 
-    context={'usersList':users,'leagueName':leagueName,'user_id':user_id,'leagueCode':leagueCode}
+    adminID=executeInSQL(f'select admin from LEAGUE where LEAGUE_CODE={leagueCode};')[0][0]
+
+    context={'usersList':users,'leagueName':leagueName,'user_id':user_id,'leagueCode':leagueCode,'adminID':adminID}
 
     return render(request,'showLeague.html',context)
 
 #leaving a league
 def leaveLeague(request,user_id,leagueCode):
-    pass
+    #first check user_id=admin
+    adminID=executeInSQL(f'select admin from LEAGUE where LEAGUE_CODE={leagueCode};')[0][0]
+    #if true destroy the whole League
+    if(user_id==adminID):
+        insertInSQL(f'delete from league where LEAGUE_CODE={leagueCode};')
+    #else leave the hell out
+    else:
+        insertInSQL(f'delete from LEAGUE_TEAMS where LEAGUE_CODE={leagueCode} and user_id={user_id};')
+    
+    return redirect('userLeague',user_id)
