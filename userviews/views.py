@@ -1,8 +1,9 @@
-from distutils.util import execute
+from urllib import response
 from django.http import HttpResponse
 from django.shortcuts import render,redirect
 from django.contrib import messages
 from django.db import connection
+from FPLdjango.function import loadGameWeek
 import homepage.classes
 from homepage.views import gameweek as currentGameweek, insertInSQL
 import userviews.functions as functions
@@ -19,7 +20,9 @@ def executeInSQL(sql):
 
 def loginView(request):
     global user
+    global currentGameweek
     if user.is_authenticated:
+        currentGameweek=loadGameWeek()
         return redirect('/home/')
     
     if(request.method=='GET'):
@@ -140,3 +143,68 @@ def deletePlayerView(request,user_id,player_id):
         return render(request,'partials/myPlayers.html',context)
     else:
         return HttpResponse("Delete Failed")
+
+
+#League Views
+def leagueView(request,user_id):
+    #TODO: show league points also
+    result=executeInSQL(f'select league_code,LEAGUE_NAME from LEAGUE where league_code in (select LEAGUE_CODE from LEAGUE_TEAMS where USER_ID={user_id});')
+    leagueList=[]
+    for league in result:
+        leagueList.append({'code':league[0],'name':league[1]})
+    joinableLeague=[]
+    result=executeInSQL(f'select * from LEAGUE where LEAGUE_CODE not in (select league_code from LEAGUE_TEAMS where user_id={user_id});')
+    for league in result:
+        joinableLeague.append({'code':league[0],'name':league[1]})
+    context={'user_id':user_id,'user':user,'userLeague':leagueList,'joinableLeague':joinableLeague}
+    return render(request,'userLeague.html',context)
+
+def createLeagueView(request):
+    user_id=request.POST['user_id']
+    leagueName=request.POST['leagueName']
+    request=executeInSQL(f'select count(*) from LEAGUE where LEAGUE_NAME=\'{leagueName}\';')[0][0]
+    if request==0:
+        insertInSQL(f'insert into LEAGUE (LEAGUE_NAME,ADMIN) values(\'{leagueName}\',{user_id});')
+        response= HttpResponse(f'<div class="text text-success">{leagueName} created</div>')
+        response.headers['HX-Trigger']="newLeague"
+        return response
+    else:
+        return HttpResponse(f'<div class="text text-danger">A league already exists with {leagueName}</div>')
+
+def showUserLeague(request,user_id):
+    result=executeInSQL(f'select league_code,LEAGUE_NAME from LEAGUE where league_code in (select LEAGUE_CODE from LEAGUE_TEAMS where USER_ID={user_id});')
+    leagueList=[]
+    for league in result:
+        leagueList.append({'code':league[0],'name':league[1]})
+    joinableLeague=[]
+    result=executeInSQL(f'select * from LEAGUE where LEAGUE_CODE not in (select league_code from LEAGUE_TEAMS where user_id={user_id});')
+    for league in result:
+        joinableLeague.append({'code':league[0],'name':league[1]})
+    
+    return render(request,'partials/leagueList.html',{'userLeague':leagueList,'user':user,'user_id':user_id,'joinableLeague':joinableLeague})
+
+
+def joinLeague(request,user_id,leagueCode):
+    insertInSQL(f'insert into league_teams (league_code, user_id) values ({leagueCode},{user_id});')
+    response=HttpResponse(None)
+    response.headers['HX-Trigger']="newLeague"
+    return response
+
+#particular league info view
+def showLeague(request,user_id,leagueCode):
+    leagueName=executeInSQL(f'select league_name from LEAGUE where LEAGUE_CODE={leagueCode};')[0][0]
+    result=executeInSQL(f'select USER_ID from LEAGUE_TEAMS where LEAGUE_CODE={leagueCode};')
+    users=[]
+    for i in result:
+        id=i[0]
+        teamName=executeInSQL(f'select team_name from users where USER_ID={id};')[0][0]
+        teamPoint=executeInSQL(f'select GET_LEAGUE_TEAMS_POINTS({leagueCode},{id}) from dual;')[0][0]
+        users.append({'userID':id,'teamName':teamName,'teamPoint':teamPoint})
+
+    context={'usersList':users,'leagueName':leagueName,'user_id':user_id,'leagueCode':leagueCode}
+
+    return render(request,'showLeague.html',context)
+
+#leaving a league
+def leaveLeague(request,user_id,leagueCode):
+    pass

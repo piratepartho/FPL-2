@@ -8,7 +8,7 @@
         <li><a href={%url 'fixture' %}>View fixtures</a> </li>
         <li><a href={%url 'addFixture' %}>Add fixtures</a> </li>
         <li><a href={%url 'statFixtureSelect' %}>Add Stat</a></li>
-
+        <li><a href="{%url 'increaseGW' %}">Increase Gameweek {{gw}}</a></li>
         <a href={%url 'logout'%}>Logout</a>
     {%else%}
         <a href={%url 'login'%}>Not Logged In! Login Again</a>

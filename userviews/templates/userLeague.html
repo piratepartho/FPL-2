@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    League
+{% endblock title %}    
+
+{% block body %}
+    <div class="container my-3">
+        <form action="post">
+            <input type="text" name="leagueName" >
+            <input type="hidden" name="user_id" value="{{user_id}}">
+            <button class="btn btn-success" hx-post="{%url 'createLeague'%}" hx-target="#messages">Create League</button>
+        </form>
+        <div id="messages"></div>
+    </div>
+
+    <div id="leagueList" hx-get="{% url 'showUserLeague' user_id %}" hx-trigger="newLeague from:body" hx-swap="innerHTML">
+        {% include 'partials/leagueList.html' %}
+    </div>
+
+{% endblock body %}

@@ -3,6 +3,7 @@ from django.http import HttpResponse
 from django.shortcuts import render,redirect
 from django.contrib import messages
 from django.db import connection
+from FPLdjango.function import loadGameWeek
 from homepage.classes import User
 
 user=User()
@@ -28,6 +29,8 @@ def showLoginPage(request):
     if(request.method=='GET'):
         return render(request,'index.html')
     elif request.method=='POST':
+        global gameweek
+        gameweek=loadGameWeek()
         username=request.POST['username']
         password=request.POST['password']
         if(username=='admin' and password=='1234'):
@@ -42,7 +45,7 @@ def doLogout(request):
     return redirect('/admin/')
 
 def showAdminHomePage(request):
-    return render(request,'adminPage.html',{'user':user})
+    return render(request,'adminPage.html',{'user':user,'gw':gameweek})
 
 def showTeamEdit(request,team_id):
     cursor=connection.cursor()
@@ -239,7 +242,9 @@ def addStatHomePlayersSaveView(request,match_id):
         red=request.POST[f'red{id}']
         penSave=request.POST[f'penSaves{id}']
         save=request.POST[f'saves{id}']
-
+        result=executeInSQL(f'select * from PLAYER_STAT where PLAYER_ID={id} and MATCH_ID={match_id};')
+        if len(result) is not 0:
+            insertInSQL(f'delete from PLAYER_STAT where PLAYER_ID={id} and MATCH_ID={match_id};')
         insertInSQL(f"""INSERT INTO PLAYER_STAT
                     (MATCH_ID, GAMEWEEK, MIN_PLAYED, GOALS_SCORED, ASSIST, OWN_GOAL, PENALTIES_SAVED, PENALTIES_MISSED, YELLOW_CARDS, RED_CARDS, SAVES,  PLAYER_ID) 
                     VALUES
@@ -277,7 +282,9 @@ def addStatAwayPlayersSaveView(request,match_id):
         red=request.POST[f'red{id}']
         penSave=request.POST[f'penSaves{id}']
         save=request.POST[f'saves{id}']
-
+        result=executeInSQL(f'select * from PLAYER_STAT where PLAYER_ID={id} and MATCH_ID={match_id};')
+        if len(result) is not 0:
+            insertInSQL(f'delete from PLAYER_STAT where PLAYER_ID={id} and MATCH_ID={match_id};')
         insertInSQL(f"""INSERT INTO PLAYER_STAT
                     (MATCH_ID, GAMEWEEK, MIN_PLAYED, GOALS_SCORED, ASSIST, OWN_GOAL, PENALTIES_SAVED, PENALTIES_MISSED, YELLOW_CARDS, RED_CARDS, SAVES,  PLAYER_ID) 
                     VALUES
@@ -285,3 +292,9 @@ def addStatAwayPlayersSaveView(request,match_id):
                 )
 
     return redirect('/admin/home/')
+
+def increaseGW(request):
+    global gameweek
+    insertInSQL(f'call END_GAMEWEEK({gameweek})')
+    gameweek=loadGameWeek()
+    return redirect('adminHome')
