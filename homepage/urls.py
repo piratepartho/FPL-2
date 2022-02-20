@@ -1,7 +1,5 @@
 from django.urls import path
 import homepage.views as views
-import info.views
-import userviews.views
 
 urlpatterns=[
     path('',views.showLoginPage,name='login'),
@@ -20,6 +18,6 @@ urlpatterns=[
     path('addStat/<int:match_id>/awayPlayers/',views.addStatAwayPlayersView,name='addStatAwayPlayers'),
     path('addStat/<int:match_id>/awayPlayers/save/',views.addStatAwayPlayersSaveView,name='addStatAwayPlayersSave'),
     path('home/increaseGW/',views.increaseGW,name='increaseGW'),
-
+    path('toggleTeamEdit/',views.toggleEdit,name='toggleTeamEdit'),
 ]
 

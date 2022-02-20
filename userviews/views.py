@@ -94,7 +94,8 @@ def createUserView(request):
 
 def myTeamView(request,user_id):
     if(user.is_authenticated) :
-        context={'user_id':user_id,'user':user}
+        teamEditStatus=executeInSQL('select TEAM_EDIT_STATUS from GAMEWEEK;')[0][0]
+        context={'user_id':user_id,'user':user,'teamEditStatus':teamEditStatus}
         return render(request,'myTeam/myTeam.html',context)
     else:
         return redirect('/')
@@ -139,7 +140,8 @@ def addToUserTeam(requset,user_id,player_id):
 def deletePlayerView(request,user_id,player_id):
     if(user.team.deletePlayer(player_id)):
         insertInSQL(f'delete from FIELD_PLAYER where PLAYER_ID={player_id} and USER_ID={user_id};')
-        context={'user_id':user_id,'user':user}
+        teamEditStatus=executeInSQL('select TEAM_EDIT_STATUS from GAMEWEEK;')[0][0]
+        context={'user_id':user_id,'user':user,'teamEditStatus':teamEditStatus}
         return render(request,'partials/myPlayers.html',context)
     else:
         return HttpResponse("Delete Failed")

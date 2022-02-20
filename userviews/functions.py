@@ -6,5 +6,4 @@ def makeSearchSQL(teamID,position):
         statement+=f' position=\'{position}\','
     statement=statement[:-1]
     statement=statement.replace(',', ' and ')
-    print(statement)
     return statement

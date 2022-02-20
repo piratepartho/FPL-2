@@ -2,15 +2,24 @@
 {%extends 'base.html'%}
 
 {%block body%}
-    {% if user.is_authenticated %}
-        <h1 align="center">Welcome, Admin!</h1>
-        <li><a href={%url 'editTeam' %}>Edit Team  & Player Info</li>
-        <li><a href={%url 'fixture' %}>View fixtures</a> </li>
-        <li><a href={%url 'addFixture' %}>Add fixtures</a> </li>
-        <li><a href={%url 'statFixtureSelect' %}>Add Stat</a></li>
-        <li><a href="{%url 'increaseGW' %}">Increase Gameweek {{gw}}</a></li>
-        <a href={%url 'logout'%}>Logout</a>
-    {%else%}
-        <a href={%url 'login'%}>Not Logged In! Login Again</a>
-    {%endif%}
+    <div class="container">
+        <div class="align-items-center">
+            {% if user.is_authenticated %}
+                <h2 align="center">Welcome, Admin!</h1>
+                <li><a href="{%url 'editTeam' %}">Edit Team  & Player Info</li>
+                <li><a href="{%url 'fixture' %}">View fixtures</a> </li>
+                <li><a href="{%url 'addFixture' %}">Add fixtures</a> </li>
+                {% if teamEditStatus %}
+                    <li><a href="{%url 'toggleTeamEdit' %}"> Stop Team Edit </a></li>
+                {% else %}
+                    <li><a href="{%url 'toggleTeamEdit' %}"> Start Team Edit </a></li>
+                    <li><a href="{%url 'statFixtureSelect' %}">Add Stat</a></li>
+                    <li><a href="{%url 'increaseGW' %}">Increase Gameweek from {{gw}}</a></li>
+                {% endif %}
+                <a href="{%url 'logout'%}" class="btn btn-secondary">Logout</a>
+            {%else%}
+                <a href={%url 'login'%}>Not Logged In! Login Again</a>
+            {%endif%}
+        </div>
+    </div>
 {%endblock%}

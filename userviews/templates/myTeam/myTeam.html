@@ -16,7 +16,10 @@ Team {{user.team.name}}
 
 {% include 'partials/myPlayers.html' %}
 
-<a href="addPlayer/"><button type="button" class="btn btn-sm btn-primary" disabled>Add Player</button></a>
+{% if teamEditStatus %}
+    <a href="addPlayer/"><button type="button" class="btn btn-sm btn-primary" disabled>Add Player</button></a>
+{% endif %}
+
 <a href="{%url 'userHomePage'%}"><button type="button" class="btn btn-sm btn-primary" disabled>Back</button></a>
 
 {%else%}
