@@ -7,9 +7,33 @@ Team {{user.team.name}}
 {% block body %}
 {% if user.is_authenticated %}
 
-{% include 'partials/myPlayers.html' %}
 
 
+<div class="container" >
+    <div class="row my-4">
+        <div class="col">
+            {% include 'partials/myPlayers.html' %}
+            {% if teamEditStatus %}
+                <a href="addPlayer/"><button type="button" class="btn btn-sm btn-primary" disabled>Add Player</button></a>
+            {% endif %}
+            <a href="{%url 'userHomePage'%}"><button type="button" class="btn btn-sm btn-primary" disabled>Back</button></a>
+        </div>
+        <div class="col">
+            {% if teamEditStatus %}
+            <form method="post">
+                <div hx-post="{%url 'selectCaptain' user_id%}" hx-trigger="change" hx-target="#myplayertable">
+                    <select name="captainID" class="form-select">
+                        <option value="">--Please choose a Captain--</option>
+                        {% for player in user.team.player %}
+                            <option value="{{player.id}}">{{player.name}}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </form>
+            {% endif %}
+        </div>
+    </div>
+</div>
 
 {%else%}
 <a href='/'>not logged in,login to enter</a>

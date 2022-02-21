@@ -42,8 +42,12 @@ def loginView(request):
 
             #DONE TODO: load user.team data from database
             result=executeInSQL(f'select * from PLAYER where PLAYER_ID in (select PLAYER_ID from FIELD_PLAYER where USER_ID={user.id} and GAMEWEEK={currentGameweek})')
+            captainID=executeInSQL(f'select CAPTAIN from USER_TEAM where USER_ID={user.id} and GAMEWEEK={currentGameweek};')[0][0]
             for p in result:
-                user.team.addPlayer(p[0],p[1]+' '+p[2],p[3],p[6]/10)
+                if(p[0]!=captainID):
+                    user.team.addPlayer(p[0],p[1]+' '+p[2],p[3],p[6]/10,False)
+                elif(p[0]==captainID):
+                    user.team.addPlayer(p[0],p[1]+' '+p[2],p[3],p[6]/10,True)
             return redirect('/home/')
             #DONE
 
@@ -128,7 +132,7 @@ def getPlayerData(request,user_id):
 def addToUserTeam(requset,user_id,player_id):
     result=executeInSQL(f'select * from player where player_id={player_id}')
     #only added to the current user in server
-    response=user.team.addPlayer(result[0][0],result[0][1]+' '+result[0][2],result[0][3],result[0][6]/10)
+    response=user.team.addPlayer(result[0][0],result[0][1]+' '+result[0][2],result[0][3],result[0][6]/10,False)
     
     if response=='Player Added':
         #added to the database for the current Gameweek
@@ -229,6 +233,16 @@ def leaveLeague(request,user_id,leagueCode):
 
     return redirect('userLeague',user_id)
 
-def captainView(request):
+def captainView(request,user_id):
     playerID=request.POST['captainID']
+    insertInSQL(f'update USER_TEAM set CAPTAIN={playerID} where GAMEWEEK={currentGameweek} and USER_ID={user_id};')
+    for p in user.team.player:
+        if p.id==int(playerID):
+            print('hello')
+            p.is_captain=True
+        else:
+            p.is_captain=False
+    teamEditStatus=executeInSQL('select TEAM_EDIT_STATUS from GAMEWEEK;')[0][0]
+    context={'user':user,'user_id':user_id,'teamEditStatus':teamEditStatus}
+    return render(request,'partials/myPlayers.html',context)
     
