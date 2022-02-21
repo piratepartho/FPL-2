@@ -1,4 +1,5 @@
 from urllib import response
+from wsgiref.util import request_uri
 from django.http import HttpResponse
 from django.shortcuts import render,redirect
 from django.contrib import messages
@@ -41,8 +42,12 @@ def loginView(request):
 
             #DONE TODO: load user.team data from database
             result=executeInSQL(f'select * from PLAYER where PLAYER_ID in (select PLAYER_ID from FIELD_PLAYER where USER_ID={user.id} and GAMEWEEK={currentGameweek})')
+            captainID=executeInSQL(f'select CAPTAIN from USER_TEAM where USER_ID={user.id} and GAMEWEEK={currentGameweek};')[0][0]
             for p in result:
-                user.team.addPlayer(p[0],p[1]+' '+p[2],p[3],p[6]/10)
+                if(p[0]!=captainID):
+                    user.team.addPlayer(p[0],p[1]+' '+p[2],p[3],p[6]/10,False)
+                elif(p[0]==captainID):
+                    user.team.addPlayer(p[0],p[1]+' '+p[2],p[3],p[6]/10,True)
             return redirect('/home/')
             #DONE
 
@@ -94,7 +99,8 @@ def createUserView(request):
 
 def myTeamView(request,user_id):
     if(user.is_authenticated) :
-        context={'user_id':user_id,'user':user}
+        teamEditStatus=executeInSQL('select TEAM_EDIT_STATUS from GAMEWEEK;')[0][0]
+        context={'user_id':user_id,'user':user,'teamEditStatus':teamEditStatus}
         return render(request,'myTeam/myTeam.html',context)
     else:
         return redirect('/')
@@ -126,7 +132,7 @@ def getPlayerData(request,user_id):
 def addToUserTeam(requset,user_id,player_id):
     result=executeInSQL(f'select * from player where player_id={player_id}')
     #only added to the current user in server
-    response=user.team.addPlayer(result[0][0],result[0][1]+' '+result[0][2],result[0][3],result[0][6]/10)
+    response=user.team.addPlayer(result[0][0],result[0][1]+' '+result[0][2],result[0][3],result[0][6]/10,False)
     
     if response=='Player Added':
         #added to the database for the current Gameweek
@@ -139,7 +145,8 @@ def addToUserTeam(requset,user_id,player_id):
 def deletePlayerView(request,user_id,player_id):
     if(user.team.deletePlayer(player_id)):
         insertInSQL(f'delete from FIELD_PLAYER where PLAYER_ID={player_id} and USER_ID={user_id};')
-        context={'user_id':user_id,'user':user}
+        teamEditStatus=executeInSQL('select TEAM_EDIT_STATUS from GAMEWEEK;')[0][0]
+        context={'user_id':user_id,'user':user,'teamEditStatus':teamEditStatus}
         return render(request,'partials/myPlayers.html',context)
     else:
         return HttpResponse("Delete Failed")
@@ -201,10 +208,41 @@ def showLeague(request,user_id,leagueCode):
         teamPoint=executeInSQL(f'select GET_LEAGUE_TEAMS_POINTS({leagueCode},{id}) from dual;')[0][0]
         users.append({'userID':id,'teamName':teamName,'teamPoint':teamPoint})
 
-    context={'usersList':users,'leagueName':leagueName,'user_id':user_id,'leagueCode':leagueCode}
+    users.sort(key=functions.sortOnPoint)
+
+    rank=1
+    for user in users:
+        user['rank']=rank
+        rank+=1
+
+    adminID=executeInSQL(f'select admin from LEAGUE where LEAGUE_CODE={leagueCode};')[0][0]
+    context={'usersList':users,'leagueName':leagueName,'user_id':user_id,'leagueCode':leagueCode,'adminID':adminID}
 
     return render(request,'showLeague.html',context)
 
 #leaving a league
 def leaveLeague(request,user_id,leagueCode):
-    pass
+    #first check user_id=admin
+    adminID=executeInSQL(f'select admin from LEAGUE where LEAGUE_CODE={leagueCode};')[0][0]
+    #if true destroy the whole League
+    if(user_id==adminID):
+        insertInSQL(f'delete from league where LEAGUE_CODE={leagueCode};')
+    #else leave the hell out
+    else:
+        insertInSQL(f'delete from LEAGUE_TEAMS where LEAGUE_CODE={leagueCode} and user_id={user_id};')
+
+    return redirect('userLeague',user_id)
+
+def captainView(request,user_id):
+    playerID=request.POST['captainID']
+    insertInSQL(f'update USER_TEAM set CAPTAIN={playerID} where GAMEWEEK={currentGameweek} and USER_ID={user_id};')
+    for p in user.team.player:
+        if p.id==int(playerID):
+            print('hello')
+            p.is_captain=True
+        else:
+            p.is_captain=False
+    teamEditStatus=executeInSQL('select TEAM_EDIT_STATUS from GAMEWEEK;')[0][0]
+    context={'user':user,'user_id':user_id,'teamEditStatus':teamEditStatus}
+    return render(request,'partials/myPlayers.html',context)
+    

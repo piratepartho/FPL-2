@@ -1,17 +1,31 @@
 {%extends 'base.html'%}
 
 {% block body %}
-    <form action='' method='POST'>
-        {% csrf_token %}
-        Username:<input type='text' name='username'><br>
-        Password:<input type='Password' name='password'><br>
-        <input type="submit">
-    </form>
-    {% if messages %}
-    <ul class="messages">
-        {% for message in messages %}
-        <li>{{ message }}</li>
-        {% endfor %}
-    </ul>
-    {% endif %}
+    
+    
+    <div class="container mt-5">
+        <div class="row d-flex justify-content-center">
+            <div class="col">
+                <div class="card text-center px-5 py-5">
+                    <form action='' method='POST'>
+                        {% csrf_token %}
+                        
+                        <div class="mb-4">Username:<input type='text' name='username'></div>
+                        <div class="mb-4">Password:<input type='Password' name='password'></div>
+                        <div class="mb-3">
+                            <button class="btn btn-outline-dark" type="submit">Login</button>
+                        </div>
+                    </form>
+                    <a href="{%url 'userLoginPage'%}" class="btn btn-outline-secondary">User Login</a>
+                </div>
+                {% if messages %}
+                    <ul class="messages">
+                        {% for message in messages %}
+                        <li>{{ message }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            </div>
+        </div>
+    </div>
 {% endblock %}

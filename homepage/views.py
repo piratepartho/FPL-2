@@ -45,7 +45,8 @@ def doLogout(request):
     return redirect('/admin/')
 
 def showAdminHomePage(request):
-    return render(request,'adminPage.html',{'user':user,'gw':gameweek})
+    teamEditStatus=executeInSQL('select TEAM_EDIT_STATUS from GAMEWEEK;')[0][0]
+    return render(request,'adminPage.html',{'user':user,'gw':gameweek,'teamEditStatus':teamEditStatus})
 
 def showTeamEdit(request,team_id):
     cursor=connection.cursor()
@@ -243,7 +244,7 @@ def addStatHomePlayersSaveView(request,match_id):
         penSave=request.POST[f'penSaves{id}']
         save=request.POST[f'saves{id}']
         result=executeInSQL(f'select * from PLAYER_STAT where PLAYER_ID={id} and MATCH_ID={match_id};')
-        if len(result) is not 0:
+        if len(result) != 0:
             insertInSQL(f'delete from PLAYER_STAT where PLAYER_ID={id} and MATCH_ID={match_id};')
         insertInSQL(f"""INSERT INTO PLAYER_STAT
                     (MATCH_ID, GAMEWEEK, MIN_PLAYED, GOALS_SCORED, ASSIST, OWN_GOAL, PENALTIES_SAVED, PENALTIES_MISSED, YELLOW_CARDS, RED_CARDS, SAVES,  PLAYER_ID) 
@@ -283,7 +284,7 @@ def addStatAwayPlayersSaveView(request,match_id):
         penSave=request.POST[f'penSaves{id}']
         save=request.POST[f'saves{id}']
         result=executeInSQL(f'select * from PLAYER_STAT where PLAYER_ID={id} and MATCH_ID={match_id};')
-        if len(result) is not 0:
+        if len(result) != 0:
             insertInSQL(f'delete from PLAYER_STAT where PLAYER_ID={id} and MATCH_ID={match_id};')
         insertInSQL(f"""INSERT INTO PLAYER_STAT
                     (MATCH_ID, GAMEWEEK, MIN_PLAYED, GOALS_SCORED, ASSIST, OWN_GOAL, PENALTIES_SAVED, PENALTIES_MISSED, YELLOW_CARDS, RED_CARDS, SAVES,  PLAYER_ID) 
@@ -297,4 +298,9 @@ def increaseGW(request):
     global gameweek
     insertInSQL(f'call END_GAMEWEEK({gameweek})')
     gameweek=loadGameWeek()
+    return redirect('adminHome')
+
+#toggles User Team Edit Permission For the current GW
+def toggleEdit(request):
+    insertInSQL(f'call toggleTeamEdit();')
     return redirect('adminHome')

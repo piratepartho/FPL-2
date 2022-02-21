@@ -17,11 +17,13 @@ class Player:
     position=None
     cost=None
     id=None
-    def __init__(self,id,name,position,cost):
+    is_captain=None
+    def __init__(self,id,name,position,cost,is_captain):
         self.id=id
         self.name=name
         self.position=position
         self.cost=cost
+        self.is_captain=is_captain
 
 class Team:
     player=None
@@ -58,7 +60,7 @@ class Team:
         return False
 
 
-    def addPlayer(self,id,name,position,cost):
+    def addPlayer(self,id,name,position,cost,captain):
         if(len(self.player)>=11):
             return 'Limit Reached'
         if not self.okPosition(position):
@@ -68,7 +70,7 @@ class Team:
         if self.total_cost+cost>70:
             return f'Not Enough Money'
         
-        self.player.append(Player(id,name,position,cost))
+        self.player.append(Player(id,name,position,cost,captain))
         self.total_cost+=cost
         #sort the players
         self.player.sort(key=customcmp)
