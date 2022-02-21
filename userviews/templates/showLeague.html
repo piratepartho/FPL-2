@@ -8,23 +8,32 @@
     <table class="table table-striped">
         <thead>
             <tr>
+                <th>Rank</th>
                 <th>Team Name</th>
                 <th>Points</th>
             </tr>
         </thead>    
         <tbody>
             {% for id in usersList %}
-                {% if user_id is id.userID %}
+                {%if adminID is id.userID%}
+                    <tr bgcolor="pink">
+                        <td>{{id.rank}}</td>
+                        <td>{{id.teamName}}</td>
+                        <td>{{id.teamPoint}}</td>
+                    </tr>
+                {% elif user_id is id.userID %}
                     <tr bgcolor="#evan">
+                        <td>{{id.rank}}</td>
                         <td>{{id.teamName}}</td>
                         <td>{{id.teamPoint}}</td>
                     </tr>
                 {% else %}
                     <tr>
+                        <td>{{id.rank}}</td>
                         <td>{{id.teamName}}</td>
                         <td>{{id.teamPoint}}</td>
                     </tr>
-                {% endif %}
+                    {% endif %}
             {% endfor %}
         </tbody>
     </table>

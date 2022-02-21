@@ -7,3 +7,6 @@ def makeSearchSQL(teamID,position):
     statement=statement[:-1]
     statement=statement.replace(',', ' and ')
     return statement
+
+def sortOnPoint(x):
+    return -x['teamPoint'] 
