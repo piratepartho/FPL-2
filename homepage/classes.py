@@ -17,11 +17,13 @@ class Player:
     position=None
     cost=None
     id=None
+    is_captain=None
     def __init__(self,id,name,position,cost):
         self.id=id
         self.name=name
         self.position=position
         self.cost=cost
+        self.is_captain=False
 
 class Team:
     player=None

@@ -302,7 +302,5 @@ def increaseGW(request):
 
 #toggles User Team Edit Permission For the current GW
 def toggleEdit(request):
-    print('hello')
     insertInSQL(f'call toggleTeamEdit();')
-    print('hello')
     return redirect('adminHome')

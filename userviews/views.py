@@ -1,4 +1,5 @@
 from urllib import response
+from wsgiref.util import request_uri
 from django.http import HttpResponse
 from django.shortcuts import render,redirect
 from django.contrib import messages
@@ -210,3 +211,7 @@ def showLeague(request,user_id,leagueCode):
 #leaving a league
 def leaveLeague(request,user_id,leagueCode):
     pass
+
+def captainView(request):
+    playerID=request.POST['captainID']
+    
