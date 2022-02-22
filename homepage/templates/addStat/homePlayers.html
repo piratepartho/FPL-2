@@ -25,20 +25,20 @@
                 {% for p in players %}
                     <tr>
                         <td style="width:20%">{{p.first_name}} {{p.second_name}}</td>
-                        <td><input style="width:80%" type="number" name="goalScored{{p.player_id}}" value="0"></td>
-                        <td><input style="width:80%" type="number" name="assist{{p.player_id}}" value="0"></td>
-                        <td><input style="width:80%" type="number" name="minutes{{p.player_id}}" value="0"></td>
-                        <td><input style="width:80%" type="number" name="yellow{{p.player_id}}" value="0"></td>
-                        <td><input style="width:80%" type="number" name="red{{p.player_id}}" value="0"></td>
-                        <td><input style="width:80%" type="number" name="ownGoal{{p.player_id}}" value="0"></td>
-                        <td><input style="width:80%" type="number" name="penMiss{{p.player_id}}" value="0"></td>
+                        <td><input style="width:80%" type="number" name="goalScored{{p.player_id}}" value="{{p.gs}}"></td>
+                        <td><input style="width:80%" type="number" name="assist{{p.player_id}}" value="{{p.assist}}"></td>
+                        <td><input style="width:80%" type="number" name="minutes{{p.player_id}}" value="{{p.minute}}"></td>
+                        <td><input style="width:80%" type="number" name="yellow{{p.player_id}}" value="{{p.yellow}}"></td>
+                        <td><input style="width:80%" type="number" name="red{{p.player_id}}" value="{{p.red}}"></td>
+                        <td><input style="width:80%" type="number" name="ownGoal{{p.player_id}}" value="{{p.own_goal}}"></td>
+                        <td><input style="width:80%" type="number" name="penMiss{{p.player_id}}" value="{{p.penMiss}}"></td>
                         <td>
-                            {% if p.position == "Goalkeeper" %}  <input style="width:80%" type="number" name="saves{{p.player_id}}" value="0"> 
+                            {% if p.position == "Goalkeeper" %}  <input style="width:80%" type="number" name="saves{{p.player_id}}" value="{{p.save}}"> 
                             {%else%} <input style="width:80%" type="hidden" name="saves{{p.player_id}}" value="0">
                             {% endif %}
                         </td>
                         <td>
-                            {% if p.position == "Goalkeeper" %}  <input type="number" name="penSaves{{p.player_id}}" value="0"> 
+                            {% if p.position == "Goalkeeper" %}  <input type="number" name="penSaves{{p.player_id}}" value="{{p.penSave}}"> 
                             {%else%} <input type="hidden" name="penSaves{{p.player_id}}" value="0">
                             {% endif %}
                         </td>

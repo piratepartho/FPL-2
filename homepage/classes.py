@@ -1,6 +1,7 @@
 
 from gc import get_count
 from django.db import connection
+from django.shortcuts import redirect
 
 def customcmp(x):
         if(x.position=='Goalkeeper'):
@@ -99,4 +100,30 @@ class User:
         self.team=Team()
 
 
-    
+
+class Stat:
+    minute=None
+    gw=None
+    point=None
+    assist=None
+    gs =None
+    gc =None
+    own =None
+    yellow =None
+    red =None
+    save =None
+    penMiss =None
+    penSave=None
+    def __init__(self,gw,point,minute,gs,gc,assist,own,y,r,save,penSave,penMiss):
+        self.gw=gw
+        self.point=point
+        self.minute=minute
+        self.assist=assist
+        self.gs=gs
+        self.gc=gc
+        self.own=own
+        self.yellow=y
+        self.red=r
+        self.save=save
+        self.penSave=penSave
+        self.penMiss=penMiss

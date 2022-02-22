@@ -203,8 +203,9 @@ def addStatFixtureView(request):
 def addStatScoreView(request,match_id):
     homeTeamName=executeInSQL(f'select TEAM_NAME from TEAM where TEAM_ID=(select HOME_TEAM from FIXTURE where MATCH_ID={match_id});')[0][0]
     awayTeamName=executeInSQL(f'select TEAM_NAME from TEAM where TEAM_ID=(select AWAY_TEAM from FIXTURE where MATCH_ID={match_id});')[0][0]
+    homeScore,awayScore=executeInSQL(f'select HOME_TEAM_SCORE,AWAY_TEAM_SCORE from FIXTURE where MATCH_ID={match_id};')[0]
 
-    context={'match_id':match_id,'homeTeamName':homeTeamName,'awayTeamName':awayTeamName}
+    context={'match_id':match_id,'homeTeamName':homeTeamName,'awayTeamName':awayTeamName,'homeScore':homeScore,'awayScore':awayScore}
     return render(request,'addStat/score.html',context)
 
 def addStatSaveScoreView(request,match_id):
@@ -218,10 +219,17 @@ def addStatHomePlayersView(request,match_id):
     homeTeamID=executeInSQL(f'select home_team,away_team from fixture where match_id={match_id}')[0][0]
     result=executeInSQL(f'select * from PLAYER where TEAM_ID={homeTeamID}')
     
+    
     playersDict=[]
     for p in result:
+        stat=executeInSQL(f'select MIN_PLAYED,GOALS_SCORED,ASSIST,OWN_GOAL,PENALTIES_SAVED,PENALTIES_MISSED,YELLOW_CARDS,RED_CARDS,SAVES from PLAYER_STAT where PLAYER_ID={p[0]} and MATCH_ID={match_id};')
+        if len(stat)==0:
+            stat=[0,0,0,0,0,0,0,0,0]
+        else:
+            stat=stat[0]
         playersDict.append({
-            'player_id':p[0],'first_name':p[1],'second_name':p[2],'position':p[3],'value':p[6]/10,'points':p[5]
+            'player_id':p[0],'first_name':p[1],'second_name':p[2],'position':p[3],'value':p[6]/10,'points':p[5],
+            'minute':stat[0],'gs':stat[1],'assist':stat[2],'own_goal':stat[3],'penSave':stat[4],'penMiss':stat[5],'yellow':stat[6],'red':stat[7],'save':stat[8]
             })
 
     context={'players':playersDict}
@@ -260,8 +268,14 @@ def addStatAwayPlayersView(request,match_id):
     
     playersDict=[]
     for p in result:
+        stat=executeInSQL(f'select MIN_PLAYED,GOALS_SCORED,ASSIST,OWN_GOAL,PENALTIES_SAVED,PENALTIES_MISSED,YELLOW_CARDS,RED_CARDS,SAVES from PLAYER_STAT where PLAYER_ID={p[0]} and MATCH_ID={match_id};')
+        if len(stat)==0:
+            stat=[0,0,0,0,0,0,0,0,0]
+        else:
+            stat=stat[0]
         playersDict.append({
-            'player_id':p[0],'first_name':p[1],'second_name':p[2],'position':p[3],'value':p[6]/10,'points':p[5]
+            'player_id':p[0],'first_name':p[1],'second_name':p[2],'position':p[3],'value':p[6]/10,'points':p[5],
+            'minute':stat[0],'gs':stat[1],'assist':stat[2],'own_goal':stat[3],'penSave':stat[4],'penMiss':stat[5],'yellow':stat[6],'red':stat[7],'save':stat[8]
             })
 
     context={'players':playersDict}

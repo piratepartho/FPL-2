@@ -12,7 +12,7 @@
                 
                 {% if player.is_captain %}
                 <tr bgcolor="yellow">
-                    <td style="width:20%">{{player.name}}</td>
+                    <td style="width:20%"> <a href="{%url 'playerInfo' player.id%}">{{player.name}}</a> </td>
                     <td style="width:20%">{{player.position}}</td>
                     <td style="width:20%">{{player.cost}}</td>
                     
@@ -31,7 +31,7 @@
                 </tr>
                 {% else %}
                 <tr>
-                    <td style="width:20%">{{player.name}}</td>
+                    <td style="width:20%"><a href="{%url 'playerInfo' player.id%}">{{player.name}}</a></td>
                     <td style="width:20%">{{player.position}}</td>
                     <td style="width:20%">{{player.cost}}</td>
                     

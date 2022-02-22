@@ -10,9 +10,9 @@
     {% comment %} need to show team info also {% endcomment %}
     <table width="100%" border="1">
         <tr>
-            {% comment %} <th>Player ID</th> {% endcomment %}
+            <th> <a href="{%url 'playerInfo' player.player_id %}">Player ID</a></th>
             {% comment %} there will be a link to show player stat {% endcomment %}
-            <th>First Name</th>
+            <th> First Name</th>
             <th>Second Name</th>
             <th>Position</th>
             <th>Value</th>

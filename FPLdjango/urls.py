@@ -19,6 +19,6 @@ import info.views
 
 urlpatterns = [
     path('admin/',include('homepage.urls')),
-    path('teams/',include('info.urls')),
+    path('info/',include('info.urls')),
     path('',include('userviews.urls')),
 ]

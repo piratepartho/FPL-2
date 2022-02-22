@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+{% block title %}
+    {{name}} Info
+{% endblock title %}
+
+{% block body %}
+    <div class="container">
+        <div class="row">
+            <div class="col my-2 text-center h2"><b>{{name}}</b></div>
+        </div>
+        <div class="row">
+            <div class="col mt-5 mb-2 text-center h4">Position: {{position}}</div>
+        </div>
+        <div class="row">
+            <div class="col my-2 text-center h4">Value: {{value}}</div>
+        </div>
+        <div class="row">
+            <div class="col my-2 text-center h4">Total Points: {{totalPoint}}</div>
+        </div>
+    </div>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>GW</th>
+                <th>Point</th>
+                <th>Minute</th>
+                <th>Goal Scored</th>
+                <th>Goal Conceded</th>
+                <th>Assist</th>
+                <th>Own Goal</th>
+                <th>Yellows</th>
+                <th>Reds</th>
+                {% if position in "Goalkeeper"%}
+                    <th>Saves</th>
+                    <th>Penalties Saved</th>
+                    <th>Penalties Missed</th>
+                {% endif %}
+            </tr>
+        </thead>
+        <tbody>
+            {% for stat in statList %}
+                <tr>
+                    <td>{{stat.gw}}</td>
+                    <td>{{stat.point}}</td>
+                    <td>{{stat.minute}}</td>
+                    <td>{{stat.gs}}</td>
+                    <td>{{stat.gc}}</td>
+                    <td>{{stat.assist}}</td>
+                    <td>{{stat.own}}</td>
+                    <td>{{stat.yellow}}</td>
+                    <td>{{stat.red}}</td>
+                    {% if position in "Goalkeeper"%}
+                    <td>{{stat.save}}</td>
+                    <td>{{stat.penSave}}</td>
+                    <td>{{stat.penMiss}}</td>
+                {% endif %}
+                </tr>
+                
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock body %}

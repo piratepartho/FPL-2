@@ -113,7 +113,10 @@ def addPlayerView(request,user_id):
     for t in result:
         teams.append({'id':t[0],'team_name':t[1]})
     
-    context={'user_id':user_id,'user':user,'teams':teams,'remainingMoney':(70-user.team.total_cost)}
+    remaining=70-user.team.total_cost
+    remaining="{:.2f}".format(remaining)
+    
+    context={'user_id':user_id,'user':user,'teams':teams,'remainingMoney':str(remaining)}
     return render(request,'myTeam/addPlayer.html',context)
 
 def getPlayerData(request,user_id):

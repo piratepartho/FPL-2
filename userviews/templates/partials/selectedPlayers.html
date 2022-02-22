@@ -11,7 +11,7 @@
         <tbody>
             {% for p in players %}
                 <tr>
-                    <td style="width:20%">{{p.first_name}} {{p.second_name}}</td>
+                    <td style="width:20%"> <a href="{%url 'playerInfo' p.player_id%}">{{p.first_name}} {{p.second_name}}</a> </td>
                     <td style="width:20%">{{p.position}}</td>
                     <td style="width:20%">{{p.value}}</td>
                     <td><div id="addButton_{{p.player_id}}">
