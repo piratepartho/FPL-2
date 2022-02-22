@@ -99,8 +99,10 @@ def createUserView(request):
 def myTeamView(request,user_id):
     if(user.is_authenticated) :
         teamEditStatus=executeInSQL('select TEAM_EDIT_STATUS from GAMEWEEK;')[0][0]
-        history=executeInSQL(f'select GAMEWEEK,POINTS from USER_TEAM where USER_ID={user_id} and GAMEWEEK<>{currentGameweek};')
-        history=homepage.classes.userHistory(history)
+        history=None
+        if(currentGameweek!=1):
+            history=executeInSQL(f'select GAMEWEEK,POINTS from USER_TEAM where USER_ID={user_id} and GAMEWEEK<>{currentGameweek};')
+            history=homepage.classes.userHistory(history)
         context={'user_id':user_id,'user':user,'teamEditStatus':teamEditStatus,'history':history}
         return render(request,'myTeam/myTeam.html',context)
     else:
@@ -266,5 +268,5 @@ def getGWData(request,user_id,gw):
     result=executeInSQL(f'select PLAYER_ID,FIRST_NAME||\' \'||LAST_NAME,POSITION,(select POINTS from PLAYER_STAT where GAMEWEEK={gw} and PLAYER_STAT.PLAYER_ID=PLAYER.PLAYER_ID) from PLAYER where PLAYER_ID IN (select PLAYER_ID from FIELD_PLAYER where GAMEWEEK={gw} and USER_ID={user_id});')
     result=homepage.classes.GWHistory(result)
 
-    context={'gw':gw,'point':point,'captain':captain,'history':result}
+    context={'gw':gw,'point':point,'captain':captain,'history':result,'user_id':user_id}
     return render(request,'myTeam/gwHistory.html',context)

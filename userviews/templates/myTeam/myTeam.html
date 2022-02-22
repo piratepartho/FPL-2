@@ -18,21 +18,24 @@ Team {{user.team.name}}
             {% endif %}
             <a href="{%url 'userHomePage'%}"><button type="button" class="btn btn-sm btn-primary" disabled>Back</button></a>
         </div>
-        <div class="col">
-            <div class="h2 text-center">GW HISTORY</div>
-            <table class="table table-striped">
-                <thead>
-                    <th>GW</th>
-                    <th>Point</th>
-                </thead>
-                <tbody>
-                    {% for h in history.allGW %}
-                        <td><a href="{%url 'gwHistory' user_id h.gw%}">{{h.gw}}</a></td>
-                        <td>{{h.point}}</td>
-                    {% endfor %}
-                </tbody>
-            </table>
-        </div>
+        {% if history %}
+            <div class="col">
+                <div class="h2 text-center">GW HISTORY</div>
+                <table class="table table-striped">
+                    <thead>
+                        <th>GW</th>
+                        <th>Point</th>
+                    </thead>
+                    <tbody>
+                        {% for h in history.allGW %}
+                            <td><a href="{%url 'gwHistory' user_id h.gw%}">{{h.gw}}</a></td>
+                            <td>{{h.point}}</td>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% endif %}
+        
         <div class="col">
             {% if teamEditStatus %}
             <form method="post">
