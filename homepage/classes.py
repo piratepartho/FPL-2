@@ -127,3 +127,10 @@ class Stat:
         self.save=save
         self.penSave=penSave
         self.penMiss=penMiss
+
+class userHistory:
+    allGW=[]
+    def __init__(self,list):
+        for row in list:
+            self.allGW.append({'gw':row[0],'point':row[1]})
+    print(allGW)

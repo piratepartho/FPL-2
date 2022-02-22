@@ -19,6 +19,21 @@ Team {{user.team.name}}
             <a href="{%url 'userHomePage'%}"><button type="button" class="btn btn-sm btn-primary" disabled>Back</button></a>
         </div>
         <div class="col">
+            <div class="h2 text-center">GW HISTORY</div>
+            <table class="table table-striped">
+                <thead>
+                    <th>GW</th>
+                    <th>Point</th>
+                </thead>
+                <tbody>
+                    {% for h in history.allGW %}
+                        <td>{{h.gw}}</td>
+                        <td>{{h.point}}</td>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <div class="col">
             {% if teamEditStatus %}
             <form method="post">
                 <div hx-post="{%url 'selectCaptain' user_id%}" hx-trigger="change" hx-target="#myplayertable">

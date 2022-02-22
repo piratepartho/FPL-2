@@ -7,7 +7,7 @@ from FPLdjango.function import loadGameWeek
 from homepage.classes import User
 
 user=User()
-gameweek=1
+gameweek=loadGameWeek()
 def executeInSQL(sql):
     cursor=connection.cursor()
     cursor.execute(sql)
@@ -31,6 +31,7 @@ def showLoginPage(request):
     elif request.method=='POST':
         global gameweek
         gameweek=loadGameWeek()
+        print('HERE',gameweek)
         username=request.POST['username']
         password=request.POST['password']
         if(username=='admin' and password=='1234'):

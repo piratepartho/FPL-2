@@ -23,7 +23,6 @@ def loginView(request):
     global user
     global currentGameweek
     if user.is_authenticated:
-        currentGameweek=loadGameWeek()
         return redirect('/home/')
     
     if(request.method=='GET'):
@@ -100,7 +99,11 @@ def createUserView(request):
 def myTeamView(request,user_id):
     if(user.is_authenticated) :
         teamEditStatus=executeInSQL('select TEAM_EDIT_STATUS from GAMEWEEK;')[0][0]
-        context={'user_id':user_id,'user':user,'teamEditStatus':teamEditStatus}
+        history=executeInSQL(f'select GAMEWEEK,POINTS from USER_TEAM where USER_ID={user_id} and GAMEWEEK<>{currentGameweek};')
+        print(history)
+        print(currentGameweek)
+        history=homepage.classes.userHistory(history)
+        context={'user_id':user_id,'user':user,'teamEditStatus':teamEditStatus,'history':history}
         return render(request,'myTeam/myTeam.html',context)
     else:
         return redirect('/')
