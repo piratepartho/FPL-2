@@ -113,7 +113,7 @@ def addPlayerView(request,user_id):
     for t in result:
         teams.append({'id':t[0],'team_name':t[1]})
     
-    context={'user_id':user_id,'user':user,'teams':teams}
+    context={'user_id':user_id,'user':user,'teams':teams,'remainingMoney':(70-user.team.total_cost)}
     return render(request,'myTeam/addPlayer.html',context)
 
 def getPlayerData(request,user_id):
@@ -127,7 +127,9 @@ def getPlayerData(request,user_id):
         playersDict.append({
             'player_id':p[0],'first_name':p[1],'second_name':p[2],'position':p[3],'value':p[6]/10,'points':p[5]
             })
-    return render (request,'partials/selectedPlayers.html',{'players':playersDict,'user_id':user.id})
+    remaining=70-user.team.total_cost
+    remaining="{:.2f}".format(remaining)
+    return render (request,'partials/selectedPlayers.html',{'players':playersDict,'user_id':user.id,'remainingMoney':str(remaining)})
 
 def addToUserTeam(requset,user_id,player_id):
     result=executeInSQL(f'select * from player where player_id={player_id}')
@@ -137,7 +139,9 @@ def addToUserTeam(requset,user_id,player_id):
     if response=='Player Added':
         #added to the database for the current Gameweek
         insertInSQL(f'insert into FIELD_PLAYER values({user_id},{currentGameweek},{player_id});')
-        return HttpResponse(response)
+        response=HttpResponse(response)
+        response.headers['HX-Trigger']="updateCost"
+        return response
     else:
         return HttpResponse(response)
 
@@ -246,3 +250,7 @@ def captainView(request,user_id):
     context={'user':user,'user_id':user_id,'teamEditStatus':teamEditStatus}
     return render(request,'partials/myPlayers.html',context)
     
+def getCost(request,user_id):
+    remaining=70-user.team.total_cost
+    remaining="{:.2f}".format(remaining)
+    return HttpResponse('Cost Remaining: '+str(remaining))

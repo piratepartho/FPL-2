@@ -1,4 +1,5 @@
 <div id="playerTable">
+    <div class="text-center my-3 fw-bold fs-3" id="moneyRem" hx-get="{%url 'getCost' user_id%}" hx-trigger="updateCost from:body">Cost Remaining: {{remainingMoney}}</div>
     <table  class="table table-striped">
         <thead>
         <tr>
