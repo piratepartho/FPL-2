@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% block title %}
+    {{gw}} Performance
+{% endblock title %}
+
+{% block body %}
+    <div class="container">
+        <div class="row">
+            <div class="col my-2 text-center h2"><b>Gameweek {{gw}}</b></div>
+        </div>
+        <div class="row">
+            <div class="col mt-5 mb-2 text-center h4">Point Earned: {{point}}</div>
+        </div>
+        <div class="row">
+            <div class="col mb-2 text-center h4">Captain: {{captain}}</div>
+        </div>
+        <!-- <div class="row">
+            <div class="col my-2 text-center h4">Value: {{value}}</div>
+        </div>
+        <div class="row">
+            <div class="col my-2 text-center h4">Total Points: {{totalPoint}}</div>
+        </div> -->
+    </div>
+    <table class="table table-striped">
+        <thead>
+            <th>Name</th>
+            <th>Position</th>
+            <th>Point</th>
+        </thead>
+        <tbody>
+            {% for row in history.player %}
+                <tr>
+                    <td><a href="{%url 'playerInfo' row.id%}">{{row.name}}</a></td>
+                    <td>{{row.position}}</td>
+                    <td>{{row.point}}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock body %}

@@ -131,6 +131,16 @@ class Stat:
 class userHistory:
     allGW=[]
     def __init__(self,list):
+        self.allGW=[]
         for row in list:
             self.allGW.append({'gw':row[0],'point':row[1]})
-    print(allGW)
+
+class GWHistory:
+    gw=None
+    point=None
+    captainName=None
+    player=[]
+    def __init__(self,list):
+        self.player=[]
+        for row in list:
+            self.player.append({'id':row[0],'name':row[1],'position':row[2],'point':row[3]})

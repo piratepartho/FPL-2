@@ -14,5 +14,4 @@ def insertInSQL(sql):
 
 def loadGameWeek():
     result=executeInSQL('select * from Gameweek;')[0][0]
-    print(result)
     return result

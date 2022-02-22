@@ -16,6 +16,9 @@ urlpatterns=[
     #particular league info urls
     path('<int:user_id>/<int:leagueCode>/show/',userviews.views.showLeague,name='showLeague'),
     path('leaveLeague/<int:user_id>/<int:leagueCode>/',userviews.views.leaveLeague,name='leaveLeague'),
+
+    #userGW based history
+    path('getHistory/<int:user_id>/<int:gw>/',userviews.views.getGWData,name='gwHistory'),
 ]
 
 htmx_urlpatterns=[

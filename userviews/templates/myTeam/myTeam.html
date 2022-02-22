@@ -27,7 +27,7 @@ Team {{user.team.name}}
                 </thead>
                 <tbody>
                     {% for h in history.allGW %}
-                        <td>{{h.gw}}</td>
+                        <td><a href="{%url 'gwHistory' user_id h.gw%}">{{h.gw}}</a></td>
                         <td>{{h.point}}</td>
                     {% endfor %}
                 </tbody>
