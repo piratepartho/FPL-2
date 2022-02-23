@@ -1,6 +1,7 @@
-# FANTASY PREMIER LEAGUE
+![⚽_Fantasy_Premier_League](https://user-images.githubusercontent.com/76593389/155334263-c2afc14d-5f83-42fd-af2c-9c5b5f60c07e.png)
 
-Welcome to the instrunction manual on how to run the Project "**Fantasy Premier League**".
+
+Welcome to the instruction manual on how to run the Project "**Fantasy Premier League**".
 
 Created By:
 
