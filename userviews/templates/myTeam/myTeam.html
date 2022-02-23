@@ -23,13 +23,16 @@ Team {{user.team.name}}
                 <div class="h2 text-center">GW HISTORY</div>
                 <table class="table table-striped">
                     <thead>
-                        <th>GW</th>
-                        <th>Point</th>
+                        <th class="text-center">GW</th>
+                        <th class="text-center">Point</th>
                     </thead>
                     <tbody>
                         {% for h in history.allGW %}
-                            <td><a href="{%url 'gwHistory' user_id h.gw%}">{{h.gw}}</a></td>
-                            <td>{{h.point}}</td>
+                        <tr>
+                            <td class="text-center"><a href="{%url 'gwHistory' user_id h.gw%}">{{h.gw}}</a></td>
+                            <td class="text-center">{{h.point}}</td>
+                        </tr>
+                            
                         {% endfor %}
                     </tbody>
                 </table>

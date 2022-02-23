@@ -10,12 +10,12 @@
             Team Name: <input type="text" value="{{team_name}}" name='team_name'><br>
             Team Abbreviation: <input type="text" value="{{team_abvr}}" name='team_abbvr'><br>
 
-            <table width="50%" border="0">
+            <table>
                 <tr>
-                    <th>First Name</th>
-                    <th>Second Name</th>
-                    <th>Position</th>
-                    <th>Value</th>
+                    <th align="center">First Name</th>
+                    <th align="center">Second Name</th>
+                    <th align="center">Position</th>
+                    <th align="center">Value</th>
                 </tr>
                 {% for player in players %}
                 <tr>
@@ -30,7 +30,7 @@
                     <option value="Forward">Forward</option>
                     </select>
                 </td>
-                <td align="center"> {{player.value}} </td>
+                <td align="center"><input type='text' value='{{player.value}}' name='{{player.player_id}}_value'></td>
                 </tr>
                 {%endfor%}
             </table>

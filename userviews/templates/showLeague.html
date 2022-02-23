@@ -16,14 +16,14 @@
         <tbody>
             {% for id in usersList %}
                 {%if adminID is id.userID%}
-                    <tr bgcolor="pink">
-                        <td>{{id.rank}}</td>
+                    <tr class="table-primary">
+                        <td>{{id.rank}} - <b>League Admin</b></td>
                         <td>{{id.teamName}}</td>
                         <td>{{id.teamPoint}}</td>
                     </tr>
                 {% elif user_id is id.userID %}
-                    <tr bgcolor="#evan">
-                        <td>{{id.rank}}</td>
+                    <tr class="table-warning">
+                        <td>{{id.rank}} - <b>Me</b> </td>
                         <td>{{id.teamName}}</td>
                         <td>{{id.teamPoint}}</td>
                     </tr>
@@ -38,8 +38,7 @@
         </tbody>
     </table>
 
-    <button class="btn btn-danger align-center">
-        <a href="{%url 'leaveLeague' user_id leagueCode %}"> Leave League</a>
-    </button>
+    <a href="{%url 'leaveLeague' user_id leagueCode %}" class="btn btn-danger mt-3 mx-3"> Leave League</a>
+    <a href="{%url 'userLeague' user_id%}" class="btn btn-dark mt-3">Back</a>
     
 {% endblock body %}

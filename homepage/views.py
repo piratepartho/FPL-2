@@ -22,14 +22,15 @@ def insertInSQL(sql):
 
 # Create your views here.
 def showLoginPage(request):
+    global gameweek
     # at first check if the admin is logged in the session
     if(user.is_authenticated):
+        gameweek=loadGameWeek()
         return redirect('/admin/home/')
     #if not then do the following to log him in
     if(request.method=='GET'):
         return render(request,'index.html')
     elif request.method=='POST':
-        global gameweek
         gameweek=loadGameWeek()
         print('HERE',gameweek)
         username=request.POST['username']
@@ -89,6 +90,11 @@ def showTeamEdit(request,team_id):
                 player['position']=request.POST[str(player['player_id'])+'_position']
                 sql='update player set position=\''+player['position']+'\' where player_id='+str(player['player_id'])
                 executeInSQL(sql)
+            if str(player['player_id'])+'_value' in request.POST.keys() and player['value']!=float(request.POST[str(player['player_id'])+'_value']):
+                player['value']=float(request.POST[str(player['player_id'])+'_value'])
+                id=player['player_id']
+                val=int(player['value']*10)
+                insertInSQL(f'update PLAYER set COST={val} where PLAYER_ID={id};')
 
         context={'team_name':team_name,'team_abvr':team_abbvr,'players':playersDict,'user':user}
         return render(request,'editTeam.html',context)
@@ -311,6 +317,7 @@ def addStatAwayPlayersSaveView(request,match_id):
 
 def increaseGW(request):
     global gameweek
+    gameweek=loadGameWeek()
     insertInSQL(f'call END_GAMEWEEK({gameweek})')
     gameweek=loadGameWeek()
     return redirect('adminHome')

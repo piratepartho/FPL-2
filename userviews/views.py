@@ -1,3 +1,4 @@
+
 from urllib import response
 from wsgiref.util import request_uri
 from django.http import HttpResponse
@@ -23,6 +24,7 @@ def loginView(request):
     global user
     global currentGameweek
     if user.is_authenticated:
+        currentGameweek=loadGameWeek()
         return redirect('/home/')
     
     if(request.method=='GET'):
@@ -35,6 +37,7 @@ def loginView(request):
         
         if (len(user_num)==1):
             user.is_authenticated=True
+            currentGameweek=loadGameWeek()
         if(user.is_authenticated):
             user=homepage.classes.User(user_num[0][1],user_num[0][0],True)
             user.team.setTeamName(user_num[0][4])
@@ -265,6 +268,9 @@ def getCost(request,user_id):
 def getGWData(request,user_id,gw):
     point=executeInSQL(f'select POINTS from USER_TEAM where USER_ID={user_id} and GAMEWEEK={gw};')[0][0]
     captain=executeInSQL(f'select FIRST_NAME||\' \'||LAST_NAME from PLAYER where PLAYER_ID=(select CAPTAIN from USER_TEAM where USER_ID={user_id} and GAMEWEEK={gw});')[0][0]
+    checkCaptain=executeInSQL(f'select count(*) from FIELD_PLAYER where GAMEWEEK={gw} and USER_ID={user_id} and PLAYER_ID=(select CAPTAIN from USER_TEAM where USER_ID={user_id} and GAMEWEEK={gw});')[0][0]
+    if checkCaptain==0:
+        captain=None
     result=executeInSQL(f'select PLAYER_ID,FIRST_NAME||\' \'||LAST_NAME,POSITION,(select POINTS from PLAYER_STAT where GAMEWEEK={gw} and PLAYER_STAT.PLAYER_ID=PLAYER.PLAYER_ID) from PLAYER where PLAYER_ID IN (select PLAYER_ID from FIELD_PLAYER where GAMEWEEK={gw} and USER_ID={user_id});')
     result=homepage.classes.GWHistory(result)
 
