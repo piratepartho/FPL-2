@@ -73,23 +73,23 @@ def showTeamEdit(request,team_id):
         team_abbvr=request.POST['team_abbvr']
         
         if(team_name!=team[0][2]): #team_name changed
-            executeInSQL('update Team set team_name=\'' +str(team_name)+ '\' where team_id='+str(team_id)+';')
+            insertInSQL('update Team set team_name=\'' +str(team_name)+ '\' where team_id='+str(team_id)+';')
         if(team_abbvr!=team[0][1]):
-            executeInSQL('update Team set team_abrv=\'' +str(team_abbvr)+ '\' where team_id='+str(team_id)+';')
+            insertInSQL('update Team set team_abrv=\'' +str(team_abbvr)+ '\' where team_id='+str(team_id)+';')
         for player in playersDict:
             if player['first_name']!=request.POST[str(player['player_id'])+'_first_name']:
                 sql='update player set first_name=\''+request.POST[str(player['player_id'])+'_first_name']+'\' where player_id='+str(player['player_id'])
-                executeInSQL(sql)
+                insertInSQL(sql)
                 player['first_name']=request.POST[str(player['player_id'])+'_first_name']
             if player['second_name']!=request.POST[str(player['player_id'])+'_second_name']:   
                 sql='update player set last_name=\''+request.POST[str(player['player_id'])+'_second_name']+'\' where player_id='+str(player['player_id'])
-                executeInSQL(sql)
+                insertInSQL(sql)
                 player['second_name']=request.POST[str(player['player_id'])+'_second_name']
             if str(player['player_id'])+'_position' in request.POST.keys() and player['position']!=request.POST[str(player['player_id'])+'_position']:
                 print(player['player_id'])
                 player['position']=request.POST[str(player['player_id'])+'_position']
                 sql='update player set position=\''+player['position']+'\' where player_id='+str(player['player_id'])
-                executeInSQL(sql)
+                insertInSQL(sql)
             if str(player['player_id'])+'_value' in request.POST.keys() and player['value']!=float(request.POST[str(player['player_id'])+'_value']):
                 player['value']=float(request.POST[str(player['player_id'])+'_value'])
                 id=player['player_id']

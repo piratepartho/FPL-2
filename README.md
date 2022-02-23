@@ -36,10 +36,15 @@ SQL> grant dba to PROJECT;
   
 
 Here, password is **1234**  <br  />
+
 Start the connection,look for **PROJECT** under the connection name. This is the database that we will be using.<br  />
+
 Then right click on PROJECT and select execute sql. In the next window you should see a file selection option. <br  />
+
 Select PROJECT.sql .Run the process and wait until it's finished.<br  />
+
 Your database should be ready now.<br  />
+
 4. when the "FPL-2" folder is open in vscode and you have django and python installed properly, <br  />
 In VSCODE "FPL-2" folder, Go to **settings.py** and in **DATABASES**, edit the info properly there.<br  />
 
