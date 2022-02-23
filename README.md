@@ -9,12 +9,12 @@ To run the project you will need to follow these steps:<br />
    to check if you have django installed, run the command : pip --version<br />
    if you dont have django, run the command using the terminal: pip install django.<br />
 
-2. Go to sqlplus command and create a USER
+2. Go to sqlplus command and create a USER<br />
 
-	Enter user-name: / as sysdba
-	SQL> alter session set "_ORACLE_SCRIPT"=true;
-	SQL> create user PROJECT identified by 1234;
-	SQL> grant dba to PROJECT;
+	Enter user-name: / as sysdba<br />
+	SQL> alter session set "_ORACLE_SCRIPT"=true;<br />
+	SQL> create user PROJECT identified by 1234;<br />
+	SQL> grant dba to PROJECT;<br />
 
 **IMPORTANT**: make sure the user is PROJECT and password(identified by) 1234. Otherwise,the sql will fail.<br />
 
@@ -27,11 +27,11 @@ To run the project you will need to follow these steps:<br />
 4. when the "FPL-2" folder is open in vscode and you have django and python installed properly, <br />
    In VSCODE "FPL-2" folder, Go to **settings.py** and in **DATABASES**, edit the info properly there.<br />
 
-   'NAME': 'orcl',               replace orcl with the name of SID in your connection(default is orcl)
-   'USER': 'PROJECT',
-   'PASSWORD': '1234',
-   'HOST': 'localhost',
-   'PORT': '1521'
+   'NAME': 'orcl',               replace orcl with the name of SID in your connection(default is orcl)<br />
+   'USER': 'PROJECT',<br />
+   'PASSWORD': '1234',<br />
+   'HOST': 'localhost',<br />
+   'PORT': '1521'<br />
    
    If you need to edit these settings to match the connection parameters, do so and save the changes.<br />
    Run command through VScode cmd while in the "FPL-2" folder: python manage.py runserver <br />
