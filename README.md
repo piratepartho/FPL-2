@@ -1,4 +1,4 @@
-# FPL-2
+# FANTASY PREMIER LEAGUE
 Welcome to the instrunction manual on how to run the Project "**fantasy Premier League**".<br />
 Created By: 1805094- Sheikh Hasanul Banna<br />
 		        1805107- Partho Kunda<br />
