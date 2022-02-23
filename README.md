@@ -84,9 +84,9 @@ If done correctly, this should work and start the server properly.<br  />
 6. go to http://localhost:8000/admin to access admin login page; To log in, use the following credentials:<br  />
 
 ```bash
-USERNAME: admin<br  />
+USERNAME: admin
 
-Password: 1234<br  />
+Password: 1234
 ```
 
 Use the links to access respective sides of the project<br  />
