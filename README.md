@@ -15,7 +15,7 @@ To run the project you will need to follow these steps:
 	SQL> alter session set "_ORACLE_SCRIPT"=true;
 	SQL> create user PROJECT identified by 1234;
 	SQL> grant dba to PROJECT;
-
+<h1>hi</h1>
 **IMPORTANT**: make sure the user is PROJECT and password(identified by) 1234. Otherwise,the sql will fail.
 
 3. go to the github repo and save PROJECT.sql from the repo. Then open navicat and connect to The user we created in step 2.
@@ -37,9 +37,9 @@ To run the project you will need to follow these steps:
    Run command through VScode cmd while in the "FPL-2" folder: python manage.py runserver
    If done correctly, this should work and start the server properly.
    
-5.go to http://localhost:8000/ to access the User Side of the project. You can create new user or use ones specified in the USERS table in the database.
+5. go to http://localhost:8000/ to access the User Side of the project. You can create new user or use ones specified in the USERS table in the database.
  
-6.go to http://localhost:8000/admin to access admin login page; To log in, use the following credentials:
+6. go to http://localhost:8000/admin to access admin login page; To log in, use the following credentials:
   USERNAME: admin
   Password: 1234
 use the links to access respective sides of the project
