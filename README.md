@@ -66,8 +66,19 @@ If done correctly, this should work and start the server properly.<br  />
 
 ```bash
 USERNAME: admin
+<<<<<<< HEAD
+=======
+
+>>>>>>> c6f96cb93e67d810c4cd6ceb259c69d263d3a0d6
 Password: 1234
 ```
 Use the links to access respective sides of the project<br  />
 To get further instructions, please follow the video.<br  />
+<<<<<<< HEAD
 Thank you.
+=======
+
+  
+
+Thank you.
+>>>>>>> c6f96cb93e67d810c4cd6ceb259c69d263d3a0d6
