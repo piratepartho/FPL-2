@@ -1,7 +1,7 @@
 # FANTASY PREMIER LEAGUE
 Welcome to the instrunction manual on how to run the Project "**fantasy Premier League**".<br />
-Created By: 1805094- Sheikh Hasanul Banna<br />
-		        1805107- Partho Kunda<br />
+Created By:1805107- Partho Kunda<br />
+	1805094- Sheikh Hasanul Banna<br />
 
 To run the project you will need to follow these steps:<br />
 
