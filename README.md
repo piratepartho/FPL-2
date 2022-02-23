@@ -61,16 +61,17 @@ Your database should be ready now.<br  />
 In VSCODE "FPL-2" folder, Go to **settings.py** and in **DATABASES**, edit the info properly there.<br  />
 
   
+```bash
+'NAME': 'orcl', replace orcl with the name of SID in your connection(default is orcl)
 
-'NAME': 'orcl', replace orcl with the name of SID in your connection(default is orcl)<br  />
+'USER': 'PROJECT',
 
-'USER': 'PROJECT',<br  />
+'PASSWORD': '1234',
 
-'PASSWORD': '1234',<br  />
+'HOST': 'localhost',
 
-'HOST': 'localhost',<br  />
-
-'PORT': '1521'<br  />
+'PORT': '1521'
+```
 
 If you need to edit these settings to match the connection parameters, do so and save the changes.<br  />
 
@@ -82,11 +83,13 @@ If done correctly, this should work and start the server properly.<br  />
 
 6. go to http://localhost:8000/admin to access admin login page; To log in, use the following credentials:<br  />
 
+```bash
 USERNAME: admin<br  />
 
 Password: 1234<br  />
+```
 
-use the links to access respective sides of the project<br  />
+Use the links to access respective sides of the project<br  />
 
   
 
