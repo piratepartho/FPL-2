@@ -15,7 +15,7 @@ To run the project you will need to follow these steps:
 	SQL> alter session set "_ORACLE_SCRIPT"=true;
 	SQL> create user PROJECT identified by 1234;
 	SQL> grant dba to PROJECT;
-<h1>hi</h1>
+
 **IMPORTANT**: make sure the user is PROJECT and password(identified by) 1234. Otherwise,the sql will fail.
 
 3. go to the github repo and save PROJECT.sql from the repo. Then open navicat and connect to The user we created in step 2.
