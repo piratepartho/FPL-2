@@ -20,6 +20,7 @@ To run the project you will need to follow these steps:<br />
 
 3. go to the github repo and save PROJECT.sql from the repo. Then open navicat and start a new connection that connects to The user we created in step 2.<br />
    ![connection image](connection.png) <br />
+   Here, password is **1234** <br />
    Start the connection,look for **PROJECT** under the connection name. This is the database that we will be using.<br />
    Then right click on PROJECT and select execute sql. In the next window you should see a file selection option. <br />
    Select PROJECT.sql .Run the process and wait until it's finished.<br />
