@@ -61,7 +61,10 @@ In VSCODE "FPL-2" folder, Go to **settings.py** and in **DATABASES**, edit the i
 
 If you need to edit these settings to match the connection parameters, do so and save the changes.<br  />
 
-Run command through VScode cmd while in the "FPL-2" folder: python manage.py runserver <br  />
+Run command through VScode cmd while in the "FPL-2" folder: <br  />
+```bash
+python manage.py runserver
+```
 
 If done correctly, this should work and start the server properly.<br  />
 
