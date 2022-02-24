@@ -1,6 +1,7 @@
-# FANTASY PREMIER LEAGUE
+![⚽_Fantasy_Premier_League](https://user-images.githubusercontent.com/76593389/155334263-c2afc14d-5f83-42fd-af2c-9c5b5f60c07e.png)
 
-Welcome to the instrunction manual on how to run the Project "**Fantasy Premier League**".
+
+Welcome to the instruction manual on how to run the Project "**Fantasy Premier League**".
 
 Created By:
 
@@ -27,7 +28,10 @@ SQL> grant dba to PROJECT;
 ```
 
 **IMPORTANT**: make sure the user is PROJECT and password(identified by) 1234. Otherwise,the sql will fail.<br  />
+
 3. go to the github repo and save PROJECT.sql from the repo. Then open navicat and start a new connection that connects to The user we created in step 2.<br  />
+
+
 
   
 
@@ -45,7 +49,7 @@ Select PROJECT.sql .Run the process and wait until it's finished.<br  />
 
 Your database should be ready now.<br  />
 
-4. when the "FPL-2" folder is open in vscode and you have django and python installed properly, <br  />
+4. When the "FPL-2" folder is open in vscode and you have django and python installed properly, <br  />
 In VSCODE "FPL-2" folder, Go to **settings.py** and in **DATABASES**, edit the info properly there.<br  />
 
   
@@ -61,8 +65,8 @@ In VSCODE "FPL-2" folder, Go to **settings.py** and in **DATABASES**, edit the i
 
 If you need to edit these settings to match the connection parameters, do so and save the changes.<br  />
 
-Run command through VScode cmd while in the "FPL-2" folder: <br  />
-```bash
+Run command through VScode cmd while in the "FPL-2" folder: 
+```python
 python manage.py runserver
 ```
 
@@ -76,6 +80,7 @@ If done correctly, this should work and start the server properly.<br  />
 USERNAME: admin
 Password: 1234
 ```
+
 Use the links to access respective sides of the project<br  />
 To get further instructions, please follow the video.<br  />
 Thank you.
